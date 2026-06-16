@@ -1,1 +1,256 @@
-<html> <p> Hello world</p></html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Sandbox Test Page</title>
+    <style>
+        /* Modern CSS Variables & Reset */
+        :root {
+            --bg-dark: #0f172a;
+            --card-bg: #1e293b;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --primary: #38bdf8;
+            --accent: #ec4899;
+            --success: #10b981;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            line-height: 1.6;
+            padding: 2rem 1rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        /* Container Card */
+        .container {
+            max-width: 650px;
+            width: 100%;
+            background: var(--card-bg);
+            padding: 2.5rem;
+            border-radius: 16px;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3), 
+                        0 8px 10px -6px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            animation: fadeIn 0.8s ease-in-out;
+        }
+
+        /* Typography */
+        h1 {
+            font-size: 2.25rem;
+            font-weight: 800;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(to right, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        p.subtitle {
+            color: var(--text-muted);
+            margin-bottom: 2rem;
+            font-size: 1.05rem;
+        }
+
+        /* Grid Feature Boxes */
+        .features-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .feature-box {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 1.25rem;
+            border-radius: 12px;
+            transition: transform 0.2s, border-color 0.2s;
+        }
+
+        .feature-box:hover {
+            transform: translateY(-2px);
+            border-color: var(--primary);
+        }
+
+        .feature-box h3 {
+            color: var(--primary);
+            font-size: 1.1rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .feature-box p {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        /* Interactive Test Component */
+        .test-zone {
+            background: rgba(0, 0, 0, 0.2);
+            padding: 1.5rem;
+            border-radius: 12px;
+            border-left: 4px solid var(--accent);
+            margin-bottom: 1.5rem;
+        }
+
+        .test-zone h2 {
+            font-size: 1.25rem;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            background: #0f172a;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            color: white;
+            font-size: 1rem;
+            margin-bottom: 1rem;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        input[type="text"]:focus {
+            border-color: var(--accent);
+        }
+
+        button {
+            background: linear-gradient(135deg, var(--primary), #2563eb);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            font-size: 1rem;
+            font-weight: 600;
+            border-radius: 8px;
+            cursor: pointer;
+            width: 100%;
+            transition: filter 0.2s;
+        }
+
+        button:hover {
+            filter: brightness(1.1);
+        }
+
+        /* Dynamic Feedback Message */
+        #outputMessage {
+            margin-top: 1rem;
+            padding: 0.75rem;
+            border-radius: 6px;
+            font-size: 0.95rem;
+            text-align: center;
+            display: none;
+            animation: slideUp 0.3s ease-out;
+        }
+
+        .success-style {
+            background: rgba(16, 185, 129, 0.15);
+            color: #34d399;
+            border: 1px solid rgba(16, 185, 129, 0.3);
+        }
+
+        /* Footer Info */
+        footer {
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            margin-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            padding-top: 1.5rem;
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(5px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Mobile Optimization */
+        @media (max-width: 480px) {
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+            .container {
+                padding: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <header>
+            <h1>Sandbox Environment</h1>
+            <p class="subtitle">A clean HTML5/CSS3 boilerplate to test scripts, styles, and browser rendering.</p>
+        </header>
+
+        <!-- Feature Showcases -->
+        <section class="features-grid">
+            <div class="feature-box">
+                <h3>⚡ Pure CSS</h3>
+                <p>Styled entirely via an embedded style sheet with local variables.</p>
+            </div>
+            <div class="feature-box">
+                <h3>📱 Responsive</h3>
+                <p>Fully optimized to adapt gracefully to mobile and desktop screens.</p>
+            </div>
+        </section>
+
+        <!-- Interactive JavaScript Section -->
+        <section class="test-zone">
+            <h2>✨ JavaScript DOM Test</h2>
+            <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 0.75rem;">
+                Type your name below to test runtime event listeners:
+            </p>
+            <input type="text" id="userInput" placeholder="Enter text here..." autocomplete="off">
+            <button id="testBtn">Execute Script</button>
+            <div id="outputMessage"></div>
+        </section>
+
+        <footer>
+            Status: Code running successfully in 2026 standard compliance mode.
+        </footer>
+    </div>
+
+    <!-- Embedded JavaScript Engine -->
+    <script>
+        document.getElementById('testBtn').addEventListener('click', function() {
+            const inputField = document.getElementById('userInput');
+            const outputBlock = document.getElementById('outputMessage');
+            const value = inputField.value.trim();
+
+            if (value === "") {
+                outputBlock.textContent = "❌ Please enter some text before clicking execution!";
+                outputBlock.className = ""; 
+                outputBlock.style.background = "rgba(239, 68, 68, 0.15)";
+                outputBlock.style.color = "#f87171";
+                outputBlock.style.border = "1px solid rgba(239, 68, 68, 0.3)";
+            } else {
+                outputBlock.textContent = `✅ Success! Hello, ${value}. The script environment is fully operational.`;
+                outputBlock.className = "success-style";
+            }
+            
+            outputBlock.style.display = "block";
+        });
+    </script>
+</body>
+</html>
