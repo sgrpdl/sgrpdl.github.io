@@ -1,1182 +1,256 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>HABITAT FIJI: Interactive Prototype - All 8 Screens (with Create Forms)</title>
-  <style>
-    /* ====== THEME / TOKENS ====== */
-    *{margin:0;padding:0;box-sizing:border-box}
-    :root{
-      --primary:#0078D4;--success:#107C10;--warning:#FFB900;--error:#E81123;
-      --bg-light:#F3F2F1;--border:#EDEBE9;--text-dark:#333;--text-light:#666;--white:#FFF;
-      --panel-shadow: 0 12px 28px rgba(0,0,0,.16), 0 2px 4px rgba(0,0,0,.08);
-    }
-    body{font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:var(--bg-light);color:var(--text-dark)}
-    .hidden{display:none!important}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Sandbox Test Page</title>
+    <style>
+        /* Modern CSS Variables & Reset */
+        :root {
+            --bg-dark: #0f172a;
+            --card-bg: #1e293b;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --primary: #38bdf8;
+            --accent: #ec4899;
+            --success: #10b981;
+        }
 
-    /* ====== HEADER & NAV ====== */
-    .header{
-      background:linear-gradient(135deg,var(--primary) 0%,#106EBE 100%);color:var(--white);
-      padding:15px 30px;display:flex;justify-content:space-between;align-items:center;
-      box-shadow:0 2px 8px rgba(0,0,0,.15);position:sticky;top:0;z-index:100
-    }
-    .logo{font-size:24px;font-weight:700;letter-spacing:1px}
-    .nav-bar{background:var(--white);border-bottom:1px solid var(--border);padding:0;display:flex;overflow-x:auto;box-shadow:0 1px 4px rgba(0,0,0,.1)}
-    .nav-item{padding:15px 24px;cursor:pointer;border-bottom:3px solid transparent;white-space:nowrap;transition:.3s;color:var(--text-light);user-select:none}
-    .nav-item.active{color:var(--primary);border-bottom-color:var(--primary);background:rgba(0,120,212,.05)}
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        }
 
-    /* ====== LAYOUT ====== */
-    .container{max-width:1400px;margin:0 auto;padding:30px 20px}
-    .page-title{font-size:32px;font-weight:600;margin-bottom:30px;display:flex;justify-content:space-between;align-items:center}
-    .btn{padding:10px 20px;border:none;border-radius:4px;cursor:pointer;font-size:14px;font-weight:500;transition:.3s}
-    .btn-primary{background:var(--primary);color:var(--white)}
-    .btn-primary:hover{background:#106EBE;box-shadow:0 4px 12px rgba(0,120,212,.3)}
-    .screen{display:none}.screen.active{display:block}
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            line-height: 1.6;
+            padding: 2rem 1rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
 
-    /* ====== CARDS / SECTIONS ====== */
-    .dashboard-welcome{background:linear-gradient(135deg,rgba(0,120,212,.1) 0%,rgba(16,124,16,.05) 100%);
-      padding:24px;border-radius:8px;margin-bottom:30px;border-left:4px solid var(--primary)}
-    .welcome-title{font-size:24px;font-weight:600;margin-bottom:8px}
-    .metrics-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:20px;margin-bottom:30px}
-    .metric-card{background:var(--white);padding:24px;border-radius:8px;border:1px solid var(--border);box-shadow:0 1px 4px rgba(0,0,0,.08);transition:.3s}
-    .metric-card:hover{box-shadow:0 4px 12px rgba(0,0,0,.12);transform:translateY(-2px)}
-    .metric-label{color:var(--text-light);font-size:13px;text-transform:uppercase;letter-spacing:.5px;margin-bottom:12px}
-    .metric-value{font-size:32px;font-weight:700;color:var(--primary);margin-bottom:8px}
-    .section-card{background:var(--white);padding:24px;border-radius:8px;border:1px solid var(--border);margin-bottom:20px}
-    .section-title{font-size:18px;font-weight:600;margin-bottom:20px;border-bottom:2px solid var(--border);padding-bottom:12px}
-    .project-card{background:var(--bg-light);padding:16px;border-radius:6px;margin-bottom:12px;border-left:4px solid var(--primary);transition:.3s}
-    .project-card:hover{background:var(--white);box-shadow:0 2px 8px rgba(0,0,0,.1)}
-    .project-header{display:flex;justify-content:space-between;align-items:start;margin-bottom:8px}
-    .project-id{font-weight:600;color:var(--primary)}
-    .health-badge{padding:4px 12px;border-radius:20px;font-size:12px;font-weight:600}
-    .health-on-track{background:rgba(16,124,16,.2);color:var(--success)}
-    .health-at-risk{background:rgba(255,185,0,.2);color:#D83B01}
-    .budget-bar{width:100%;height:6px;background:var(--border);border-radius:3px;overflow:hidden;margin-top:8px}
-    .budget-progress{height:100%;background:linear-gradient(90deg,var(--primary),var(--success))}
+        /* Container Card */
+        .container {
+            max-width: 650px;
+            width: 100%;
+            background: var(--card-bg);
+            padding: 2.5rem;
+            border-radius: 16px;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3), 
+                        0 8px 10px -6px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            animation: fadeIn 0.8s ease-in-out;
+        }
 
-    /* ====== FILTERS / TABLES ====== */
-    .filter-bar{background:var(--white);padding:20px;border-radius:8px;border:1px solid var(--border);margin-bottom:20px;display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:15px}
-    .filter-group{display:flex;flex-direction:column}
-    .filter-label{font-size:13px;font-weight:600;margin-bottom:6px;color:var(--text-light);text-transform:uppercase}
-    select,input,textarea{padding:10px 12px;border:1px solid var(--border);border-radius:4px;font-size:14px;font-family:inherit;background:var(--white)}
-    select:focus,input:focus,textarea:focus{outline:none;border-color:var(--primary);box-shadow:0 0 0 3px rgba(0,120,212,.1)}
-    table{width:100%;border-collapse:collapse;font-size:14px}
-    th{background:var(--bg-light);padding:12px;text-align:left;font-weight:600;border-bottom:2px solid var(--border)}
-    td{padding:12px;border-bottom:1px solid var(--border)}
-    tr:hover{background:var(--bg-light)}
+        /* Typography */
+        h1 {
+            font-size: 2.25rem;
+            font-weight: 800;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(to right, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
 
-    /* ====== TABS ====== */
-    .tabs{display:flex;background:var(--white);border-bottom:1px solid var(--border);border-radius:8px 8px 0 0;overflow-x:auto}
-    .tab{padding:16px 20px;cursor:pointer;border-bottom:3px solid transparent;white-space:nowrap;transition:.3s;color:var(--text-light);font-weight:500;background:var(--white)}
-    .tab.active{color:var(--primary);border-bottom-color:var(--primary)}
-    .tab-content{display:none;background:var(--white);padding:24px;border:1px solid var(--border);border-top:none}
-    .tab-content.active{display:block}
+        p.subtitle {
+            color: var(--text-muted);
+            margin-bottom: 2rem;
+            font-size: 1.05rem;
+        }
 
-    /* ====== TASK CARDS ====== */
-    .task-item{background:var(--white);border:1px solid var(--border);border-radius:6px;padding:16px;display:flex;justify-content:space-between;align-items:center;transition:.3s;margin-bottom:12px}
-    .task-item:hover{background:var(--bg-light);border-color:var(--primary);box-shadow:0 2px 8px rgba(0,0,0,.1)}
-    .task-title{font-weight:600;margin-bottom:6px}
-    .task-meta{font-size:13px;color:var(--text-light);display:flex;gap:16px;flex-wrap:wrap}
-    .progress-circle{width:50px;height:50px;border-radius:50%;background:var(--bg-light);display:flex;align-items:center;justify-content:center;font-weight:600;font-size:12px}
-    .progress-circle.complete{background:rgba(16,124,16,.2);color:var(--success)}
+        /* Grid Feature Boxes */
+        .features-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
 
-    /* ====== INFO BOXES ====== */
-    .info-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:30px;margin-bottom:30px}
-    .info-box{background:var(--bg-light);padding:20px;border-radius:6px}
-    .info-title{font-weight:600;margin-bottom:16px;border-bottom:2px solid var(--border);padding-bottom:8px;font-size:15px}
-    .info-row{display:flex;justify-content:space-between;margin-bottom:10px;font-size:14px}
-    .info-label{color:var(--text-light);font-weight:500}
-    .info-value{color:var(--text-dark);font-weight:600}
+        .feature-box {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 1.25rem;
+            border-radius: 12px;
+            transition: transform 0.2s, border-color 0.2s;
+        }
 
-    /* ====== STATUS BADGES ====== */
-    .status-badge{padding:4px 10px;border-radius:4px;font-size:12px;font-weight:600}
-    .badge-green{background:rgba(16,124,16,.2);color:var(--success)}
-    .badge-amber{background:rgba(255,185,0,.2);color:#D83B01}
-    .badge-red{background:rgba(232,17,35,.2);color:var(--error)}
+        .feature-box:hover {
+            transform: translateY(-2px);
+            border-color: var(--primary);
+        }
 
-    /* ====== PANELS (Fluent-style) ====== */
-    .overlay{position:fixed;inset:0;background:rgba(0,0,0,.35);backdrop-filter:saturate(120%) blur(2px);display:none;z-index:999}
-    .overlay.active{display:block}
-    .panel{position:fixed;top:0;right:-560px;width:560px;max-width:100%;height:100%;background:var(--white);box-shadow:var(--panel-shadow);display:flex;flex-direction:column;transition:right .25s ease;z-index:1000}
-    .panel.active{right:0}
-    .panel-header{padding:16px 20px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center}
-    .panel-title{font-size:18px;font-weight:700}
-    .panel-body{padding:20px;overflow:auto}
-    .form-row{display:flex;gap:12px}
-    .form-field{margin-bottom:14px;display:flex;flex-direction:column}
-    .form-field label{font-size:12px;font-weight:700;color:var(--text-light);text-transform:uppercase;margin-bottom:6px}
-    .panel-footer{padding:12px 20px;border-top:1px solid var(--border);display:flex;justify-content:flex-end;gap:10px}
-    .btn-secondary{background:#F5F5F5;color:#111;border:1px solid var(--border)}
-    .helper{font-size:12px;color:var(--text-light);margin-top:4px}
+        .feature-box h3 {
+            color: var(--primary);
+            font-size: 1.1rem;
+            margin-bottom: 0.25rem;
+        }
 
-    /* ====== TOAST ====== */
-    .toast{position:fixed;bottom:20px;right:20px;background:#111;color:#fff;padding:12px 14px;border-radius:6px;box-shadow:0 6px 16px rgba(0,0,0,.2);opacity:0;transform:translateY(8px);transition:.25s;z-index:1100}
-    .toast.show{opacity:1;transform:translateY(0)}
-    .toast.success{background:#107C10}.toast.error{background:#C50F1F}.toast.info{background:#106EBE}
+        .feature-box p {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
 
-    /* ====== RESPONSIVE ====== */
-    @media(max-width:768px){
-      .projects-grid{grid-template-columns:1fr}
-      .page-title{flex-direction:column;gap:15px}
-      .filter-bar{grid-template-columns:1fr}
-      .metrics-grid{grid-template-columns:1fr}
-      table{font-size:12px}th,td{padding:8px}
-      .panel{width:100%}
-    }
+        /* Interactive Test Component */
+        .test-zone {
+            background: rgba(0, 0, 0, 0.2);
+            padding: 1.5rem;
+            border-radius: 12px;
+            border-left: 4px solid var(--accent);
+            margin-bottom: 1.5rem;
+        }
 
+        .test-zone h2 {
+            font-size: 1.25rem;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
 
-.icon-btn {
-  background: transparent; border: 0; cursor: pointer; padding: 4px 6px;
-  font-size: 16px; line-height: 1; border-radius: 4px; color: #444;
-}
-.icon-btn:hover { background: #F3F2F1; }
-.actions { white-space: nowrap; }
+        input[type="text"] {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            background: #0f172a;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            color: white;
+            font-size: 1rem;
+            margin-bottom: 1rem;
+            outline: none;
+            transition: border-color 0.2s;
+        }
 
-  </style>
+        input[type="text"]:focus {
+            border-color: var(--accent);
+        }
+
+        button {
+            background: linear-gradient(135deg, var(--primary), #2563eb);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            font-size: 1rem;
+            font-weight: 600;
+            border-radius: 8px;
+            cursor: pointer;
+            width: 100%;
+            transition: filter 0.2s;
+        }
+
+        button:hover {
+            filter: brightness(1.1);
+        }
+
+        /* Dynamic Feedback Message */
+        #outputMessage {
+            margin-top: 1rem;
+            padding: 0.75rem;
+            border-radius: 6px;
+            font-size: 0.95rem;
+            text-align: center;
+            display: none;
+            animation: slideUp 0.3s ease-out;
+        }
+
+        .success-style {
+            background: rgba(16, 185, 129, 0.15);
+            color: #34d399;
+            border: 1px solid rgba(16, 185, 129, 0.3);
+        }
+
+        /* Footer Info */
+        footer {
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            margin-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            padding-top: 1.5rem;
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(5px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Mobile Optimization */
+        @media (max-width: 480px) {
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+            .container {
+                padding: 1.5rem;
+            }
+        }
+    </style>
 </head>
 <body>
-  <!-- HEADER -->
-  <div class="header">
-    <div class="logo">📊 GPM-File</div>
-    <div><span style="margin-right:20px;">Welcome, Jane Doe</span><span style="cursor:pointer;">👤</span></div>
-  </div>
 
-  <!-- NAV -->
-  <div class="nav-bar" id="topNav">
-    <div class="nav-item active" onclick="showScreen(event,'screen-dashboard')">Dashboard</div>
-    <div class="nav-item" onclick="showScreen(event,'screen-projects')">Projects</div>
-    <div class="nav-item" onclick="showScreen(event,'screen-project-details')">Project Details</div>
-    <div class="nav-item" onclick="showScreen(event,'screen-tasks')">Tasks</div>
-    <div class="nav-item" onclick="showScreen(event,'screen-grants')">Grants</div>
-    <div class="nav-item" onclick="showScreen(event,'screen-risks')">Risks</div>
-    <div class="nav-item" onclick="showScreen(event,'screen-monitoring')">Field Monitoring</div>
-    <div class="nav-item" onclick="showScreen(event,'screen-impact')">Impact</div>
-  </div>
-
-  <!-- ====== SCREEN: DASHBOARD ====== -->
-  <div id="screen-dashboard" class="screen active">
     <div class="container">
-      <div class="page-title">Dashboard</div>
-      <div class="dashboard-welcome">
-        <div class="welcome-title">👋 Welcome, Jane Doe!</div>
-        <div style="color:var(--text-light);font-size:14px;">Today is Friday, January 23, 2026 • Last login: 2 hours ago</div>
-      </div>
+        <header>
+            <h1>Sandbox Environment</h1>
+            <p class="subtitle">A clean HTML5/CSS3 boilerplate to test scripts, styles, and browser rendering.</p>
+        </header>
 
-      <div class="metrics-grid">
-        <div class="metric-card"><div class="metric-label">Active Projects</div><div class="metric-value">24</div><div style="color:var(--text-light);font-size:13px;">↑ 2 this month</div></div>
-        <div class="metric-card"><div class="metric-label">Total Budget</div><div class="metric-value" style="font-size:24px;">$850K USD</div><div style="color:var(--text-light);font-size:13px;">Spend: 62%</div></div>
-        <div class="metric-card"><div class="metric-label">Overdue Tasks</div><div class="metric-value">3</div><div style="color:var(--error);font-size:13px;">Action required</div></div>
-        <div class="metric-card"><div class="metric-label">Critical Risks</div><div class="metric-value">1</div><div style="color:var(--error);font-size:13px;">High priority</div></div>
-      </div>
-
-      <div class="section-card">
-        <div class="section-title">📈 Project Health Overview</div>
-        <div class="project-card">
-          <div class="project-header">
-            <div><div class="project-id">HFH-2026-001</div><div style="font-weight:500;margin-top:4px;">Health Initiative - Kenya</div></div>
-            <div class="health-badge health-on-track">🟢 On Track</div>
-          </div>
-          <div style="display:flex;gap:16px;font-size:13px;color:var(--text-light);margin-top:8px;">
-            <span>PM: Jane Doe</span><span>Budget: 62%</span><span>Days Left: 310</span>
-          </div>
-          <div class="budget-bar" style="margin-top:12px;"><div class="budget-progress" style="width:62%;"></div></div>
-        </div>
-        <div class="project-card">
-          <div class="project-header">
-            <div><div class="project-id">WB-2025-045</div><div style="font-weight:500;margin-top:4px;">Water & Sanitation - Uganda</div></div>
-            <div class="health-badge health-at-risk">🟡 At Risk</div>
-          </div>
-          <div style="display:flex;gap:16px;font-size:13px;color:var(--text-light);margin-top:8px;">
-            <span>PM: Mike L.</span><span>Budget: 92%</span><span>Days Left: 131</span>
-          </div>
-          <div class="budget-bar" style="margin-top:12px;"><div class="budget-progress" style="width:92%;background:linear-gradient(90deg,var(--warning),#FF9D00)"></div></div>
-        </div>
-      </div>
-
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;">
-        <div class="section-card">
-          <div class="section-title">⏰ Coming Due (7 Days)</div>
-          <div class="project-card" style="border-left-color:var(--warning);margin-bottom:10px;">
-            <div style="font-weight:500;margin-bottom:4px;">HFH-2026-001: Quarterly Report</div>
-            <div style="font-size:13px;color:#D83B01;">Due in 3 days</div>
-          </div>
-          <div class="project-card" style="border-left-color:var(--warning);">
-            <div style="font-weight:500;margin-bottom:4px;">WB-2025-045: Final Report</div>
-            <div style="font-size:13px;color:#D83B01;">Due in 5 days</div>
-          </div>
-        </div>
-        <div class="section-card">
-          <div class="section-title">👥 Team Capacity</div>
-          <table>
-            <tr><th>Person</th><th>Tasks</th><th>Status</th></tr>
-            <tr><td>John Doe (PM)</td><td>5</td><td><span class="status-badge badge-green">✓ OK</span></td></tr>
-            <tr><td>Jane Smith</td><td>8</td><td><span class="status-badge badge-amber">⚠️ AT CAPACITY</span></td></tr>
-            <tr><td>Mike Johnson</td><td>12</td><td><span class="status-badge badge-red">🔴 OVERLOADED</span></td></tr>
-          </table>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- ====== SCREEN: PROJECTS ====== -->
-  <div id="screen-projects" class="screen">
-    <div class="container">
-      <div class="page-title"><span>All Projects</span><button class="btn btn-primary" onclick="openPanel('panel-project')">+ Add New Project</button></div>
-
-      <div class="filter-bar">
-        <div class="filter-group"><label class="filter-label">Status</label><select><option>All</option><option>Active</option><option>Pipeline</option><option>Closed</option></select></div>
-        <div class="filter-group"><label class="filter-label">Region</label><select><option>All</option><option>East Africa</option><option>West Africa</option><option>South Asia</option></select></div>
-        <div class="filter-group"><label class="filter-label">Owner</label><select><option>All</option><option>Jane Doe</option><option>Mike Johnson</option></select></div>
-        <div class="filter-group"><label class="filter-label">Search</label><input type="text" placeholder="Search projects..."/></div>
-      </div>
-
-      <div class="projects-grid" id="projectsGrid">
-        <!-- Existing sample cards remain visible; new cards will append here -->
-        <div class="project-full-card" onclick="openProjectDetails('HFH-2026-001','Health Initiative - Kenya')">
-          <div class="card-header">
-            <div style="display:flex;justify-content:space-between;align-items:start;">
-              <div><div style="font-size:16px;font-weight:600;">HFH-2026-001</div><div style="font-size:14px;margin-top:4px;opacity:.9;">Health Initiative Kenya</div></div>
-              <div class="health-badge" style="background:rgba(16,124,16,.3);color:var(--white);">🟢 On Track</div>
+        <!-- Feature Showcases -->
+        <section class="features-grid">
+            <div class="feature-box">
+                <h3>⚡ Pure CSS</h3>
+                <p>Styled entirely via an embedded style sheet with local variables.</p>
             </div>
-          </div>
-          <div class="card-body">
-            <div class="card-row"><span class="card-label">Region</span><span class="card-value">East Africa</span></div>
-            <div class="card-row"><span class="card-label">PM</span><span class="card-value">Jane Doe</span></div>
-            <div class="card-row"><span class="card-label">Status</span><span class="card-value">Active</span></div>
-            <div class="card-row"><span class="card-label">Budget</span><span class="card-value">$150,000 USD</span></div>
-            <div class="budget-bar" style="margin-top:12px;"><div class="budget-progress" style="width:62%;"></div></div>
-            <div style="font-size:12px;color:var(--text-light);margin-top:8px;">Spend: $93K / $150K (62%)</div>
-          </div>
-        </div>
-
-        <div class="project-full-card" onclick="openProjectDetails('WB-2025-045','Water & Sanitation - Uganda')">
-          <div class="card-header">
-            <div style="display:flex;justify-content:space-between;align-items:start;">
-              <div><div style="font-size:16px;font-weight:600;">WB-2025-045</div><div style="font-size:14px;margin-top:4px;opacity:.9;">Water & Sanitation Uganda</div></div>
-              <div class="health-badge" style="background:rgba(255,185,0,.3);color:var(--white);">🟡 At Risk</div>
+            <div class="feature-box">
+                <h3>📱 Responsive</h3>
+                <p>Fully optimized to adapt gracefully to mobile and desktop screens.</p>
             </div>
-          </div>
-          <div class="card-body">
-            <div class="card-row"><span class="card-label">Region</span><span class="card-value">East Africa</span></div>
-            <div class="card-row"><span class="card-label">PM</span><span class="card-value">Mike L.</span></div>
-            <div class="card-row"><span class="card-label">Status</span><span class="card-value">Active</span></div>
-            <div class="card-row"><span class="card-label">Budget</span><span class="card-value">$200,000 USD</span></div>
-            <div class="budget-bar" style="margin-top:12px;"><div class="budget-progress" style="width:92%;background:linear-gradient(90deg,var(--warning),#FF9D00)"></div></div>
-            <div style="font-size:12px;color:var(--text-light);margin-top:8px;">Spend: $184K / $200K (92%)</div>
-          </div>
-        </div>
-      </div>
+        </section>
+
+        <!-- Interactive JavaScript Section -->
+        <section class="test-zone">
+            <h2>✨ JavaScript DOM Test</h2>
+            <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 0.75rem;">
+                Type your name below to test runtime event listeners:
+            </p>
+            <input type="text" id="userInput" placeholder="Enter text here..." autocomplete="off">
+            <button id="testBtn">Execute Script</button>
+            <div id="outputMessage"></div>
+        </section>
+
+        <footer>
+            Status: Code running successfully in 2026 standard compliance mode.
+        </footer>
     </div>
-  </div>
 
-  <!-- ====== SCREEN: PROJECT DETAILS ====== -->
-  <div id="screen-project-details" class="screen">
-    <div class="container">
-      <div id="breadcrumbs" style="font-size:13px;color:var(--text-light);margin-bottom:20px;">Home > Projects > HFH-2026-001</div>
-      <div class="page-title">
-        <div>
-          <div id="detailsTitle" style="font-size:28px;font-weight:600;margin-bottom:4px;">Health Initiative - Kenya</div>
-          <div id="detailsId" style="font-size:14px;color:var(--text-light);">ProjectID: HFH-2026-001</div>
-        </div>
-        <button class="btn btn-primary">Edit Project</button>
-      </div>
+    <!-- Embedded JavaScript Engine -->
+    <script>
+        document.getElementById('testBtn').addEventListener('click', function() {
+            const inputField = document.getElementById('userInput');
+            const outputBlock = document.getElementById('outputMessage');
+            const value = inputField.value.trim();
 
-      <div class="tabs" id="projectDetailsTabs">
-        <div class="tab active" onclick="switchTab(event,'tab-overview')">Overview</div>
-        <div class="tab" onclick="switchTab(event,'tab-team')">Team</div>
-        <div class="tab" onclick="switchTab(event,'tab-grants')">Grants</div>
-        <div class="tab" onclick="switchTab(event,'tab-tasks')">Tasks</div>
-        <div class="tab" onclick="switchTab(event,'tab-risks')">Risks</div>
-        <div class="tab" onclick="switchTab(event,'tab-partners')">Partners</div>
-        <div class="tab" onclick="switchTab(event,'tab-budget')">Budget</div>
-      </div>
-
-      <!-- OVERVIEW -->
-      <div id="tab-overview" class="tab-content active">
-        <div class="info-grid">
-          <div class="info-box">
-            <div class="info-title">Basic Information</div>
-            <div class="info-row"><span class="info-label">Title</span><span class="info-value">Health Initiative</span></div>
-            <div class="info-row"><span class="info-label">Type</span><span class="info-value">Development</span></div>
-            <div class="info-row"><span class="info-label">Region</span><span class="info-value">East Africa</span></div>
-            <div class="info-row"><span class="info-label">Country</span><span class="info-value">Kenya</span></div>
-          </div>
-          <div class="info-box">
-            <div class="info-title">Health Status</div>
-            <div class="info-row"><span class="info-label">Status</span><span class="info-value" style="color:var(--success);">🟢 On Track</span></div>
-            <div class="info-row"><span class="info-label">Updated</span><span class="info-value">2 hours ago</span></div>
-            <div class="info-row"><span class="info-label">Risk Rating</span><span class="info-value">Medium (2 risks)</span></div>
-            <div class="info-row"><span class="info-label">Team Size</span><span class="info-value">8 people</span></div>
-          </div>
-          <div class="info-box">
-            <div class="info-title">Timeline</div>
-            <div class="info-row"><span class="info-label">Start</span><span class="info-value">2026-01-15</span></div>
-            <div class="info-row"><span class="info-label">End</span><span class="info-value">2026-12-31</span></div>
-            <div class="info-row"><span class="info-label">Days Left</span><span class="info-value" style="color:var(--primary);">310 days</span></div>
-            <div class="info-row"><span class="info-label">Status</span><span class="info-value">On Track</span></div>
-          </div>
-        </div>
-
-        <div class="section-card">
-          <div class="section-title">Budget Summary</div>
-          <div class="info-grid">
-            <div style="background:transparent;padding:0;">
-              <div class="info-row" style="margin-bottom:16px;"><span class="info-label">Total Budget</span><span class="info-value">$150,000 USD</span></div>
-            </div>
-            <div style="background:transparent;padding:0;">
-              <div class="info-row" style="margin-bottom:16px;"><span class="info-label">Actual Spend</span><span class="info-value" style="color:var(--primary);">$93,000 USD (62%)</span></div>
-            </div>
-            <div style="background:transparent;padding:0;">
-              <div class="info-row" style="margin-bottom:16px;"><span class="info-label">Available Balance</span><span class="info-value" style="color:var(--success);">$57,000 USD</span></div>
-            </div>
-          </div>
-          <div class="budget-bar" style="height:8px;margin-top:16px;"><div class="budget-progress" style="width:62%;"></div></div>
-        </div>
-      </div>
-
-      <!-- TEAM -->
-      <div id="tab-team" class="tab-content">
-        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;">
-          <button class="btn btn-primary" onclick="openPanel('panel-team')">+ Add Team Member</button>
-          <div class="helper">Maps to <strong>tbl_ProjectTeam</strong>.</div>
-        </div>
-        <div style="overflow-x:auto;">
-          <table id="teamTable">
-            <tr><th>Name/Email</th><th>Role</th><th>Permission</th><th>Start Date</th></tr>
-            <!-- New rows append here -->
-          </table>
-        </div>
-      </div>
-
-      <!-- GRANTS -->
-      <div id="tab-grants" class="tab-content">
-        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;">
-          <button class="btn btn-primary" onclick="openPanel('panel-grant')">+ Add Grant</button>
-          <div class="helper">Maps to <strong>tbl_Grants</strong>.</div>
-        </div>
-        <div style="overflow-x:auto;">
-          <table id="grantsTable">
-            <tr><th>ID</th><th>Donor</th><th>Amount</th><th>Status</th><th>Next Report Due</th></tr>
-          </table>
-        </div>
-      </div>
-
-      <!-- TASKS -->
-      <div id="tab-tasks" class="tab-content">
-        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;">
-          <button class="btn btn-primary" onclick="openPanel('panel-task')">+ Add Task</button>
-          <div class="helper">Maps to <strong>tbl_Tasks</strong>.</div>
-        </div>
-        <div style="overflow-x:auto;">
-          <table id="tasksTable">
-            <tr><th>Title</th><th>Assigned To</th><th>Due Date</th><th>Status</th><th>% Complete</th></tr>
-          </table>
-        </div>
-      </div>
-
-      <!-- RISKS -->
-      <div id="tab-risks" class="tab-content">
-        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;">
-          <button class="btn btn-primary" onclick="openPanel('panel-risk')">+ Add Risk</button>
-          <div class="helper">Maps to <strong>tbl_Risks</strong>.</div>
-        </div>
-        <div style="overflow-x:auto;">
-          <table id="risksTable">
-            <tr><th>Title</th><th>Category</th><th>Score</th><th>Level</th><th>Status</th><th>Owner</th></tr>
-          </table>
-        </div>
-      </div>
-
-      <!-- PARTNERS -->
-      <div id="tab-partners" class="tab-content">
-        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;">
-          <button class="btn btn-primary" onclick="openPanel('panel-partner')">+ Add Partner</button>
-          <div class="helper">Maps to <strong>tbl_ProjectPartners</strong>.</div>
-        </div>
-        <div style="overflow-x:auto;">
-          <table id="partnersTable">
-            <tr><th>Partner ID</th><th>Role</th><th>MOU Status</th><th>Contract</th><th>Expiry</th></tr>
-          </table>
-        </div>
-      </div>
-
-      <!-- BUDGET -->
-      <div id="tab-budget" class="tab-content">
-        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;">
-          <div class="helper">Maps to <strong>tbl_BudgetLines</strong>.</div>
-          <button class="btn btn-primary" onclick="openPanel('panel-budget')">+ Add Budget Line</button>
-        </div>
-        <div style="overflow-x:auto;">
-          <table id="budgetTable">
-            <tr><th>Category</th><th>Description</th><th>Budgeted</th><th>Linked Grant</th><th>Owner</th></tr>
-          </table>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- ====== SCREEN: TASKS (GLOBAL) ====== -->
-  <div id="screen-tasks" class="screen">
-    <div class="container">
-      <div class="page-title"><span>Task Management</span><button class="btn btn-primary" onclick="openPanel('panel-task')">+ Add New Task</button></div>
-      <div class="filter-bar">
-        <div class="filter-group"><label class="filter-label">Project</label><select id="filterTasksProject"><option>All Projects</option></select></div>
-        <div class="filter-group"><label class="filter-label">Status</label><select><option>All</option><option>Not Started</option><option>In Progress</option><option>Completed</option></select></div>
-        <div class="filter-group"><label class="filter-label">Priority</label><select><option>All</option><option>High</option><option>Medium</option><option>Low</option></select></div>
-        <div class="filter-group"><label class="filter-label">Assigned To</label><select><option>All</option></select></div>
-      </div>
-      <div id="globalTasksList">
-        <!-- New task items append here for demo -->
-      </div>
-    </div>
-  </div>
-
-  <!-- ====== SCREEN: GRANTS (GLOBAL) ====== -->
-  <div id="screen-grants" class="screen">
-    <div class="container">
-      <div class="page-title"><span>Grants & Donor Reporting</span><button class="btn btn-primary" onclick="openPanel('panel-grant')">+ Add New Grant</button></div>
-      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-bottom:20px;">
-        <div style="background:var(--white);padding:16px;border-radius:6px;border-left:4px solid var(--error);text-align:center;">
-          <div style="font-size:24px;font-weight:700;color:var(--error);">1</div><div style="font-size:12px;color:var(--text-light);text-transform:uppercase;">Overdue</div>
-        </div>
-        <div style="background:var(--white);padding:16px;border-radius:6px;border-left:4px solid var(--warning);text-align:center;">
-          <div style="font-size:24px;font-weight:700;color:#D83B01;">2</div><div style="font-size:12px;color:var(--text-light);text-transform:uppercase;">Due Soon</div>
-        </div>
-        <div style="background:var(--white);padding:16px;border-radius:6px;border-left:4px solid var(--success);text-align:center;">
-          <div style="font-size:24px;font-weight:700;color:var(--success);">5</div><div style="font-size:12px;color:var(--text-light);text-transform:uppercase;">On Track</div>
-        </div>
-        <div style="background:var(--white);padding:16px;border-radius:6px;border-left:4px solid var(--primary);text-align:center;">
-          <div style="font-size:24px;font-weight:700;color:var(--primary);">12</div><div style="font-size:12px;color:var(--text-light);text-transform:uppercase;">Completed</div>
-        </div>
-      </div>
-      <div class="filter-bar">
-        <div class="filter-group"><label class="filter-label">Project</label><select id="filterGrantsProject"><option>All</option></select></div>
-        <div class="filter-group"><label class="filter-label">Donor</label><select><option>All</option><option>USAID</option><option>EU</option></select></div>
-        <div class="filter-group"><label class="filter-label">Status</label><select><option>All</option><option>Active</option><option>Closed</option></select></div>
-      </div>
-      <div style="overflow-x:auto;">
-        <table id="globalGrantsTable">
-          <tr><th>ID</th><th>Project</th><th>Donor</th><th>Amount</th><th>Status</th><th>Next Report Due</th></tr>
-        </table>
-      </div>
-    </div>
-  </div>
-
-  <!-- ====== SCREEN: RISKS (GLOBAL) ====== -->
-  <div id="screen-risks" class="screen">
-    <div class="container">
-      <div class="page-title"><span>Risk Management</span><button class="btn btn-primary" onclick="openPanel('panel-risk')">+ Add New Risk</button></div>
-      <div style="background:var(--white);padding:16px;border-radius:6px;border:1px solid var(--border);margin-bottom:20px;">
-        <div style="font-size:14px;">Total Risks: <strong id="riskCount">0</strong> • Critical: <strong style="color:var(--error);" id="riskCritical">0 🔴</strong> • High: <strong style="color:#D83B01;" id="riskHigh">0 🟠</strong> • Medium: <strong style="color:var(--warning);" id="riskMedium">0 🟡</strong></div>
-      </div>
-      <div style="background:var(--white);padding:24px;border-radius:6px;border:1px solid var(--border);margin-bottom:20px;text-align:center;color:var(--text-light);min-height:220px;display:flex;align-items:center;justify-content:center;">
-        Risk Matrix Chart Placeholder
-      </div>
-      <div style="overflow-x:auto;">
-        <table id="globalRisksTable">
-          <tr><th>Project</th><th>Title</th><th>Category</th><th>Score</th><th>Level</th><th>Status</th><th>Owner</th></tr>
-        </table>
-      </div>
-    </div>
-  </div>
-
-  <!-- ====== SCREEN: FIELD MONITORING ====== -->
-  <div id="screen-monitoring" class="screen">
-    <div class="container">
-      <div class="page-title"><span>Field Monitoring & Site Visits</span><button class="btn btn-primary" onclick="openPanel('panel-visit')">+ Record New Visit</button></div>
-
-      <div class="filter-bar">
-        <div class="filter-group"><label class="filter-label">Project</label><select id="filterVisitsProject"><option>All</option></select></div>
-        <div class="filter-group"><label class="filter-label">Site</label><select><option>All</option></select></div>
-        <div class="filter-group"><label class="filter-label">Date Range</label><input type="date"/></div>
-      </div>
-
-      <div style="background:linear-gradient(135deg,#E3F2FD 0%,#F3E5F5 100%);height:320px;border-radius:6px;display:flex;align-items:center;justify-content:center;margin-bottom:20px;border:1px solid var(--border);color:var(--text-light);">
-        Map View Placeholder (Shows sites with visit status)
-      </div>
-
-      <div class="section-card">
-        <div class="section-title">Recent Field Visits</div>
-        <div id="visitsTimeline" style="position:relative;padding-left:40px;margin-bottom:24px;">
-          <div style="position:absolute;left:10px;top:0;bottom:0;width:2px;background:var(--border);"></div>
-          <!-- new visit cards append here -->
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- ====== SCREEN: IMPACT ====== -->
-  <div id="screen-impact" class="screen">
-    <div class="container">
-      <div class="page-title"><span>Impact Reporting & Results</span><button class="btn btn-primary" onclick="openPanel('panel-impact')">+ Add New Result</button></div>
-
-      <div class="filter-bar">
-        <div class="filter-group"><label class="filter-label">Project</label><select id="filterImpactProject"><option>All</option></select></div>
-        <div class="filter-group"><label class="filter-label">Indicator</label><select><option>All</option><option>Women Trained</option><option>Water Points</option></select></div>
-        <div class="filter-group"><label class="filter-label">Period</label><select><option>All</option><option>Q1 2026</option><option>Q2 2026</option></select></div>
-        <div class="filter-group"><label class="filter-label">Status</label><select><option>All</option><option>Verified</option><option>Pending</option></select></div>
-      </div>
-
-      <div class="indicator-grid" id="impactIndicatorsGrid">
-        <!-- existing static indicator cards remain; new results are listed below in a summary table for demo -->
-      </div>
-
-      <div class="section-card" style="margin-top:20px;">
-        <div class="section-title">Results Log</div>
-        <div style="overflow-x:auto;">
-          <table id="impactResultsTable">
-            <tr><th>Project</th><th>Indicator</th><th>Period</th><th>Target</th><th>Actual</th><th>Verification</th></tr>
-          </table>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- ====== OVERLAY ====== -->
-  <div id="overlay" class="overlay" onclick="closePanel()"></div>
-
-  <!-- ====== PANELS (FORMS) ====== -->
-
-  <!-- PROJECT -->
-  <div id="panel-project" class="panel" role="dialog" aria-modal="true" aria-labelledby="panel-project-title">
-    <div class="panel-header"><div class="panel-title" id="panel-project-title">Add New Project</div><button class="btn btn-secondary" onclick="closePanel()">✕</button></div>
-    <div class="panel-body">
-      <div class="form-field"><label>Organization Code (e.g., HFH)</label><input id="projOrg" value="HFH"/></div>
-      <div class="form-row">
-        <div class="form-field" style="flex:1"><label>Year</label><input id="projYear" type="number" value="2026"/></div>
-        <div class="form-field" style="flex:1"><label>Sequence (001..999)</label><input id="projSeq" type="number" value="101"/></div>
-      </div>
-      <div class="form-field"><label>Project Title (required)</label><input id="projTitle" placeholder="Project title"/></div>
-      <div class="form-row">
-        <div class="form-field" style="flex:1"><label>Project Type</label>
-          <select id="projType"><option>Health</option><option>WASH</option><option>Education</option><option>Livelihoods</option><option>Development</option><option>Emergency</option></select>
-        </div>
-        <div class="form-field" style="flex:1"><label>Region</label>
-          <select id="projRegion"><option>East Africa</option><option>West Africa</option><option>South Asia</option></select>
-        </div>
-      </div>
-      <div class="form-row">
-        <div class="form-field" style="flex:1"><label>Country</label><input id="projCountry" placeholder="e.g., Kenya"/></div>
-        <div class="form-field" style="flex:1"><label>Status</label>
-          <select id="projStatus"><option>Pipeline</option><option selected>Active</option><option>Closed</option><option>Archived</option></select>
-        </div>
-      </div>
-      <div class="form-row">
-        <div class="form-field" style="flex:1"><label>Start Date</label><input id="projStart" type="date"/></div>
-        <div class="form-field" style="flex:1"><label>End Date</label><input id="projEnd" type="date"/></div>
-      </div>
-      <div class="form-row">
-        <div class="form-field" style="flex:1"><label>Total Budget USD</label><input id="projBudget" type="number" min="0" step="0.01"/></div>
-        <div class="form-field" style="flex:1"><label>Project Owner (Email)</label><input id="projOwner" type="email" placeholder="owner@org.org"/></div>
-      </div>
-      <div class="helper">IDs auto-generate as <strong>ORG-YYYY-###</strong> (schema: <code>tbl_Projects.ProjectID_PK</code>). Required: Title, Dates, Budget ≥ 0. Start &lt; End. </div>
-    </div>
-    <div class="panel-footer">
-      <button class="btn btn-secondary" onclick="closePanel()">Cancel</button>
-      <button class="btn btn-primary" onclick="saveProject()">Save Project</button>
-    </div>
-  </div>
-
-  <!-- TEAM -->
-  <div id="panel-team" class="panel" role="dialog" aria-modal="true" aria-labelledby="panel-team-title">
-    <div class="panel-header"><div class="panel-title" id="panel-team-title">Add Team Member</div><button class="btn btn-secondary" onclick="closePanel()">✕</button></div>
-    <div class="panel-body">
-      <div class="form-field"><label>Project (ID)</label><input id="teamProject" value="HFH-2026-001"/></div>
-      <div class="form-field"><label>User Email (required)</label><input id="teamEmail" type="email" placeholder="user@org.org"/></div>
-      <div class="form-row">
-        <div class="form-field" style="flex:1"><label>Primary Role</label>
-          <select id="teamRole"><option>Program Director</option><option>Project Manager</option><option>Finance</option><option>M&E</option><option>Field Officer</option><option>Partner Rep</option></select>
-        </div>
-        <div class="form-field" style="flex:1"><label>Permission Level</label>
-          <select id="teamPerm"><option>View Only</option><option>Edit</option><option>Approve</option><option>Admin</option></select>
-        </div>
-      </div>
-      <div class="form-field"><label>Start Date</label><input id="teamStart" type="date"/></div>
-      <div class="helper">Maps: <code>tbl_ProjectTeam</code> → <code>ProjectID_FK</code>, <code>UserEmail_FK</code>, <code>PrimaryRole</code>, <code>PermissionLevel</code>, <code>StartDate</code>. Emails are stored in lowercase. </div>
-    </div>
-    <div class="panel-footer">
-      <button class="btn btn-secondary" onclick="closePanel()">Cancel</button>
-      <button class="btn btn-primary" onclick="saveTeam()">Save Member</button>
-    </div>
-  </div>
-
-  <!-- GRANT -->
-  <div id="panel-grant" class="panel" role="dialog" aria-modal="true" aria-labelledby="panel-grant-title">
-    <div class="panel-header"><div class="panel-title" id="panel-grant-title">Add Grant</div><button class="btn btn-secondary" onclick="closePanel()">✕</button></div>
-    <div class="panel-body">
-      <div class="form-field"><label>Project (ID)</label><input id="grantProject" value="HFH-2026-001"/></div>
-      <div class="form-field"><label>Donor ID (text key)</label><input id="grantDonor" placeholder="e.g., USAID or EU-001"/></div>
-      <div class="form-row">
-        <div class="form-field" style="flex:1"><label>Amount</label><input id="grantAmount" type="number" min="0" step="0.01"/></div>
-        <div class="form-field" style="flex:1"><label>Currency</label>
-          <select id="grantCurrency"><option>USD</option><option>EUR</option><option>GBP</option><option>KES</option></select>
-        </div>
-      </div>
-      <div class="form-row">
-        <div class="form-field" style="flex:1"><label>Exchange Rate (to USD)</label><input id="grantRate" type="number" min="0" step="0.0001" value="1"/></div>
-        <div class="form-field" style="flex:1"><label>Start Date</label><input id="grantStart" type="date"/></div>
-      </div>
-      <div class="form-row">
-        <div class="form-field" style="flex:1"><label>End Date</label><input id="grantEnd" type="date"/></div>
-        <div class="form-field" style="flex:1"><label>Status</label>
-          <select id="grantStatus"><option>Signed</option><option selected>Active</option><option>Closed</option><option>Cancelled</option></select>
-        </div>
-      </div>
-      <div class="form-row">
-        <div class="form-field" style="flex:1"><label>Reporting Frequency</label>
-          <select id="grantFreq"><option>Monthly</option><option>Quarterly</option><option>Semi-Annual</option><option>Annual</option></select>
-        </div>
-        <div class="form-field" style="flex:1"><label>First Report Due</label><input id="grantFirstDue" type="date"/></div>
-      </div>
-      <div class="helper">Maps: <code>tbl_Grants</code> fields (IDs auto-generated <code>GRANT-YYYY-#####</code>). Validations: project & donor text keys present, amount/rate > 0, start &lt; end. </div>
-    </div>
-    <div class="panel-footer">
-      <button class="btn btn-secondary" onclick="closePanel()">Cancel</button>
-      <button class="btn btn-primary" onclick="saveGrant()">Save Grant</button>
-    </div>
-  </div>
-
-  <!-- TASK -->
-  <div id="panel-task" class="panel" role="dialog" aria-modal="true" aria-labelledby="panel-task-title">
-    <div class="panel-header"><div class="panel-title" id="panel-task-title">Add Task</div><button class="btn btn-secondary" onclick="closePanel()">✕</button></div>
-    <div class="panel-body">
-      <div class="form-field"><label>Project (ID)</label><input id="taskProject" value="HFH-2026-001"/></div>
-      <div class="form-field"><label>Task Title (required)</label><input id="taskTitle" placeholder="e.g., Baseline Survey"/></div>
-      <div class="form-row">
-        <div class="form-field" style="flex:1"><label>Assigned To (Email)</label><input id="taskAssignee" type="email" placeholder="user@org.org"/></div>
-        <div class="form-field" style="flex:1"><label>Priority</label>
-          <select id="taskPriority"><option>Low</option><option>Medium</option><option selected>High</option><option>Critical</option></select>
-        </div>
-      </div>
-      <div class="form-row">
-        <div class="form-field" style="flex:1"><label>Planned Start</label><input id="taskStart" type="date"/></div>
-        <div class="form-field" style="flex:1"><label>Planned Due</label><input id="taskDue" type="date"/></div>
-      </div>
-      <div class="form-row">
-        <div class="form-field" style="flex:1"><label>Task Type</label>
-          <select id="taskType"><option>Deliverable</option><option>Milestone</option><option>Administrative</option><option>Field Activity</option><option>Reporting</option></select>
-        </div>
-        <div class="form-field" style="flex:1"><label>Category</label>
-          <select id="taskCategory"><option>Implementation</option><option>Monitoring</option><option>Finance</option><option>Compliance</option><option>Communication</option></select>
-        </div>
-      </div>
-      <div class="helper">Maps: <code>tbl_Tasks</code> (required: title, project, assignee, due date; Start ≤ Due). Emails lowercased. Defaults: Status=Not Started, %Complete=0. </div>
-    </div>
-    <div class="panel-footer">
-      <button class="btn btn-secondary" onclick="closePanel()">Cancel</button>
-      <button class="btn btn-primary" onclick="saveTask()">Save Task</button>
-    </div>
-  </div>
-
-  <!-- RISK -->
-  <div id="panel-risk" class="panel" role="dialog" aria-modal="true" aria-labelledby="panel-risk-title">
-    <div class="panel-header"><div class="panel-title" id="panel-risk-title">Add Risk</div><button class="btn btn-secondary" onclick="closePanel()">✕</button></div>
-    <div class="panel-body">
-      <div class="form-field"><label>Project (ID)</label><input id="riskProject" value="HFH-2026-001"/></div>
-      <div class="form-field"><label>Risk Title</label><input id="riskTitle" placeholder="e.g., Staff Turnover"/></div>
-      <div class="form-row">
-        <div class="form-field" style="flex:1"><label>Category</label>
-          <select id="riskCategory"><option>Financial</option><option>Operational</option><option>Compliance</option><option>Security</option><option>Environmental</option><option>Political</option><option>Partnership</option><option>Reputational</option></select>
-        </div>
-        <div class="form-field" style="flex:1"><label>Status</label>
-          <select id="riskStatus"><option>Identified</option><option selected>Monitoring</option><option>Mitigating</option><option>Escalated</option><option>Closed</option><option>Materialized</option></select>
-        </div>
-      </div>
-      <div class="form-row">
-        <div class="form-field" style="flex:1"><label>Probability (1-5)</label><input id="riskProb" type="number" min="1" max="5" value="4"/></div>
-        <div class="form-field" style="flex:1"><label>Impact (1-5)</label><input id="riskImpact" type="number" min="1" max="5" value="4"/></div>
-      </div>
-      <div class="form-field"><label>Owner (Email)</label><input id="riskOwner" type="email"/></div>
-      <div class="form-field"><label>Mitigation Plan</label><textarea id="riskPlan" rows="3" placeholder="How we’ll prevent/reduce"></textarea></div>
-      <div class="form-field"><label>Mitigation Due Date</label><input id="riskDue" type="date"/></div>
-      <div class="helper">Maps: <code>tbl_Risks</code>. Score=Probability×Impact, Level: ≥16 Critical, ≥10 High, ≥4 Medium, else Low. </div>
-    </div>
-    <div class="panel-footer">
-      <button class="btn btn-secondary" onclick="closePanel()">Cancel</button>
-      <button class="btn btn-primary" onclick="saveRisk()">Save Risk</button>
-    </div>
-  </div>
-
-  <!-- PARTNER -->
-  <div id="panel-partner" class="panel" role="dialog" aria-modal="true" aria-labelledby="panel-partner-title">
-    <div class="panel-header"><div class="panel-title" id="panel-partner-title">Add Project Partner</div><button class="btn btn-secondary" onclick="closePanel()">✕</button></div>
-    <div class="panel-body">
-      <div class="form-field"><label>Project (ID)</label><input id="partnerProject" value="HFH-2026-001"/></div>
-      <div class="form-field"><label>Partner ID (text key)</label><input id="partnerId" placeholder="e.g., PART-001"/></div>
-      <div class="form-row">
-        <div class="form-field" style="flex:1"><label>Partner Role</label>
-          <select id="partnerRole"><option>Implementing Partner</option><option>Sub-grantee</option><option>Technical Advisor</option><option>Beneficiary Org</option><option>Co-funder</option></select>
-        </div>
-        <div class="form-field" style="flex:1"><label>MOU Status</label>
-          <select id="partnerMou"><option>Draft</option><option selected>Active</option><option>Signed</option><option>Expired</option><option>Terminated</option></select>
-        </div>
-      </div>
-      <div class="form-row">
-        <div class="form-field" style="flex:1"><label>MOU Sign Date</label><input id="partnerSign" type="date"/></div>
-        <div class="form-field" style="flex:1"><label>MOU Expiry Date</label><input id="partnerExpiry" type="date"/></div>
-      </div>
-      <div class="form-field"><label>Contract Amount (USD)</label><input id="partnerAmt" type="number" min="0" step="0.01"/></div>
-      <div class="helper">Maps: <code>tbl_ProjectPartners</code> (text keys for Project/Partner). </div>
-    </div>
-    <div class="panel-footer">
-      <button class="btn btn-secondary" onclick="closePanel()">Cancel</button>
-      <button class="btn btn-primary" onclick="savePartner()">Save Partner</button>
-    </div>
-  </div>
-
-  <!-- BUDGET LINE -->
-  <div id="panel-budget" class="panel" role="dialog" aria-modal="true" aria-labelledby="panel-budget-title">
-    <div class="panel-header"><div class="panel-title" id="panel-budget-title">Add Budget Line</div><button class="btn btn-secondary" onclick="closePanel()">✕</button></div>
-    <div class="panel-body">
-      <div class="form-field"><label>Project (ID)</label><input id="budgetProject" value="HFH-2026-001"/></div>
-      <div class="form-row">
-        <div class="form-field" style="flex:1"><label>Category</label>
-          <select id="budgetCategory"><option>Personnel</option><option>Operations</option><option>Supplies</option><option>Capital</option><option>Indirect Costs</option><option>Travel</option><option>Training</option><option>Other</option></select>
-        </div>
-        <div class="form-field" style="flex:1"><label>Budgeted Amount (USD)</label><input id="budgetAmount" type="number" min="0" step="0.01"/></div>
-      </div>
-      <div class="form-field"><label>Line Description</label><input id="budgetDesc" placeholder="e.g., Senior Program Manager salary"/></div>
-      <div class="form-row">
-        <div class="form-field" style="flex:1"><label>Linked Grant ID (optional)</label><input id="budgetGrant" placeholder="e.g., GRANT-2026-12345"/></div>
-        <div class="form-field" style="flex:1"><label>Owner (Finance Email)</label><input id="budgetOwner" type="email"/></div>
-      </div>
-      <div class="helper">Maps: <code>tbl_BudgetLines</code>. Validations: Budgeted ≥ 0. </div>
-    </div>
-    <div class="panel-footer">
-      <button class="btn btn-secondary" onclick="closePanel()">Cancel</button>
-      <button class="btn btn-primary" onclick="saveBudget()">Save Budget Line</button>
-    </div>
-  </div>
-
-  <!-- FIELD VISIT -->
-  <div id="panel-visit" class="panel" role="dialog" aria-modal="true" aria-labelledby="panel-visit-title">
-    <div class="panel-header"><div class="panel-title" id="panel-visit-title">Record Field Visit</div><button class="btn btn-secondary" onclick="closePanel()">✕</button></div>
-    <div class="panel-body">
-      <div class="form-field"><label>Project (ID)</label><input id="visitProject" value="HFH-2026-001"/></div>
-      <div class="form-row">
-        <div class="form-field" style="flex:1"><label>Site ID (text key)</label><input id="visitSite" placeholder="e.g., SITE-KE-001"/></div>
-        <div class="form-field" style="flex:1"><label>Visit Date</label><input id="visitDate" type="date"/></div>
-      </div>
-      <div class="form-field"><label>Purpose</label>
-        <select id="visitPurpose"><option>Monitoring</option><option>Evaluation</option><option>Problem-Solving</option><option>Training</option><option>Audit</option><option>Ad-Hoc</option></select>
-      </div>
-      <div class="form-row">
-        <div class="form-field" style="flex:1"><label>Visited By (Email)</label><input id="visitBy" type="email"/></div>
-        <div class="form-field" style="flex:1"><label>Role</label><input id="visitRole" placeholder="e.g., M&E Officer"/></div>
-      </div>
-      <div class="form-field"><label>Companion Emails (comma-separated)</label><input id="visitCompanions" placeholder="a@org,b@org"/></div>
-      <div class="form-field"><label>Hours Spent</label><input id="visitHours" type="number" min="0" step="0.25"/></div>
-      <div class="form-field"><label>Agenda</label><textarea id="visitAgenda" rows="2"></textarea></div>
-      <div class="form-field"><label>General Findings</label><textarea id="visitFindings" rows="3"></textarea></div>
-      <div class="helper">Maps: <code>tbl_FieldVisits</code>. </div>
-    </div>
-    <div class="panel-footer">
-      <button class="btn btn-secondary" onclick="closePanel()">Cancel</button>
-      <button class="btn btn-primary" onclick="saveVisit()">Save Visit</button>
-    </div>
-  </div>
-
-  <!-- IMPACT RESULT -->
-  <div id="panel-impact" class="panel" role="dialog" aria-modal="true" aria-labelledby="panel-impact-title">
-    <div class="panel-header"><div class="panel-title" id="panel-impact-title">Add Impact Result</div><button class="btn btn-secondary" onclick="closePanel()">✕</button></div>
-    <div class="panel-body">
-      <div class="form-field"><label>Project (ID)</label><input id="impactProject" value="HFH-2026-001"/></div>
-      <div class="form-row">
-        <div class="form-field" style="flex:1"><label>Indicator ID (text key)</label><input id="impactIndicator" placeholder="e.g., IND-001"/></div>
-        <div class="form-field" style="flex:1"><label>Reporting Period</label><input id="impactPeriod" placeholder="e.g., Q1 2026"/></div>
-      </div>
-      <div class="form-row">
-        <div class="form-field" style="flex:1"><label>Period Start</label><input id="impactStart" type="date"/></div>
-        <div class="form-field" style="flex:1"><label>Period End</label><input id="impactEnd" type="date"/></div>
-      </div>
-      <div class="form-row">
-        <div class="form-field" style="flex:1"><label>Target</label><input id="impactTarget" type="number" min="0"/></div>
-        <div class="form-field" style="flex:1"><label>Actual</label><input id="impactActual" type="number" min="0"/></div>
-      </div>
-      <div class="form-row">
-        <div class="form-field" style="flex:1"><label>Verification Status</label>
-          <select id="impactVerify"><option>Data Entered</option><option>Pending Verification</option><option>Verified</option><option>Rejected</option></select>
-        </div>
-        <div class="form-field" style="flex:1"><label>Verified By (Email)</label><input id="impactVerifiedBy" type="email"/></div>
-      </div>
-      <div class="helper">Maps: <code>tbl_ImpactReporting</code> (Target/Actual ≥ 0; Start ≤ End). </div>
-    </div>
-    <div class="panel-footer">
-      <button class="btn btn-secondary" onclick="closePanel()">Cancel</button>
-      <button class="btn btn-primary" onclick="saveImpact()">Save Result</button>
-    </div>
-  </div>
-
-  <!-- TOAST -->
-  <div id="toast" class="toast">Saved</div>
-
-  <script>
-    /* ====== STATE ====== */
-    let currentProjectId = "HFH-2026-001";
-    const state = {
-      projects: [],
-      team: [],
-      grants: [],
-      tasks: [],
-      risks: [],
-      partners: [],
-      budgets: [],
-      visits: [],
-      impact: []
-    };
-
-    /* ====== NAV / TABS ====== */
-    function showScreen(evt, screenId){
-      document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
-      document.getElementById(screenId)?.classList.add('active');
-      document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
-      evt?.currentTarget?.classList.add('active');
-      window.scrollTo({top:0,behavior:'smooth'});
-    }
-    function switchTab(evt, tabId){
-      const tabsHeader = evt.currentTarget.parentElement;
-      const container = tabsHeader.parentElement;
-      tabsHeader.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
-      evt.currentTarget.classList.add('active');
-      container.querySelectorAll('.tab-content').forEach(c=>c.classList.remove('active'));
-      document.getElementById(tabId)?.classList.add('active');
-      document.getElementById(tabId)?.scrollIntoView({behavior:'smooth',block:'start'});
-    }
-    function openProjectDetails(projectId, title){
-      currentProjectId = projectId;
-      document.getElementById('breadcrumbs').textContent = `Home > Projects > ${projectId}`;
-      document.getElementById('detailsTitle').textContent = title || projectId;
-      document.getElementById('detailsId').textContent = `ProjectID: ${projectId}`;
-      showScreen({currentTarget: document.querySelector(`.nav-item[onclick*="screen-project-details"]`)}, 'screen-project-details');
-      // prefill panels with current project
-      ['teamProject','grantProject','taskProject','riskProject','partnerProject','budgetProject','visitProject','impactProject']
-        .forEach(id=>{ const el = document.getElementById(id); if(el) el.value = currentProjectId; });
-    }
-
-    /* ====== PANELS / TOAST ====== */
-    function openPanel(id){ document.getElementById('overlay').classList.add('active'); document.getElementById(id).classList.add('active'); }
-    function closePanel(){ document.getElementById('overlay').classList.remove('active'); document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active')); }
-    function toast(msg,type='success'){ const el = document.getElementById('toast'); el.textContent = msg; el.className = `toast show ${type}`; setTimeout(()=>el.className='toast',2200); }
-
-    /* ====== HELPERS ====== */
-    const pad = (n, size=3)=> String(n).padStart(size,'0');
-    function genId(prefix){ const rnd = Math.floor(10000 + Math.random()*90000); return `${prefix}-${new Date().getFullYear()}-${rnd}`; }
-    function notEmpty(v){ return v!==undefined && v!==null && String(v).trim()!==''; }
-    function isEmail(v){ return /^\S+@\S+\.\S+$/.test(String(v).trim()); }
-    function ensureLowerEmail(v){ return String(v||'').trim().toLowerCase(); }
-
-    /* ====== RENDERERS (append-only for demo) ====== */
-    function appendProjectCard(p){
-      const grid = document.getElementById('projectsGrid');
-      const card = document.createElement('div');
-      card.className = 'project-full-card';
-      card.onclick = ()=>openProjectDetails(p.ProjectID_PK, p.ProjectTitle);
-      card.innerHTML = `
-        <div class="card-header">
-          <div style="display:flex;justify-content:space-between;align-items:start;">
-            <div>
-              <div style="font-size:16px;font-weight:600;">${p.ProjectID_PK}</div>
-              <div style="font-size:14px;margin-top:4px;opacity:.9;">${p.ProjectTitle}</div>
-            </div>
-            <div class="health-badge" style="background:rgba(16,124,16,.3);color:var(--white);">${p.ProjectHealth||'🟢 On Track'}</div>
-          </div>
-        </div>
-        <div class="card-body">
-          <div class="card-row"><span class="card-label">Region</span><span class="card-value">${p.ProjectRegion||''}</span></div>
-          <div class="card-row"><span class="card-label">PM</span><span class="card-value">${p.ProjectOwner_Email||''}</span></div>
-          <div class="card-row"><span class="card-label">Status</span><span class="card-value">${p.ProjectStatus||'Active'}</span></div>
-          <div class="card-row"><span class="card-label">Budget</span><span class="card-value">$${Number(p.TotalBudgetUSD||0).toLocaleString()} USD</span></div>
-          <div class="budget-bar" style="margin-top:12px;"><div class="budget-progress" style="width:35%;"></div></div>
-          <div style="font-size:12px;color:var(--text-light);margin-top:8px;">Spend: demo</div>
-        </div>`;
-      grid.appendChild(card);
-
-      // add to global filters for convenience
-      const filters = ['filterTasksProject','filterGrantsProject','filterVisitsProject','filterImpactProject'];
-      filters.forEach(fid=>{
-        const sel = document.getElementById(fid);
-        if (sel && ![...sel.options].some(o=>o.value===p.ProjectID_PK)) {
-          const opt = document.createElement('option'); opt.value = opt.textContent = p.ProjectID_PK; sel.appendChild(opt);
-        }
-      });
-    }
-    function appendTeamRow(t){
-      const tr = document.createElement('tr');
-      tr.innerHTML = `<td>${t.UserEmail_FK}</td><td>${t.PrimaryRole}</td><td><span class="status-badge badge-green">${t.PermissionLevel}</span></td><td>${t.StartDate||''}</td>`;
-      document.getElementById('teamTable').appendChild(tr);
-    }
-    function appendGrantRow(g, scope='details'){
-      const rowHtml = `<tr><td>${g.GrantID_PK}</td><td>${g.DonorID_FK}</td><td>${g.GrantAmount} ${g.GrantCurrency}</td><td><span class="status-badge ${g.GrantStatus==='Active'?'badge-green':(g.GrantStatus==='Closed'?'badge-amber':'badge-red')}">${g.GrantStatus}</span></td><td>${g.FirstReportDue||''}</td></tr>`;
-      if (scope==='details') document.getElementById('grantsTable').insertAdjacentHTML('beforeend', rowHtml);
-      const globalHtml = `<tr><td>${g.GrantID_PK}</td><td>${g.ProjectID_FK}</td><td>${g.DonorID_FK}</td><td>${g.GrantAmount} ${g.GrantCurrency}</td><td>${g.GrantStatus}</td><td>${g.FirstReportDue||''}</td></tr>`;
-      document.getElementById('globalGrantsTable').insertAdjacentHTML('beforeend', globalHtml);
-    }
-    function appendTaskRow(t){
-      const tr = document.createElement('tr');
-      tr.innerHTML = `<td>${t.TaskTitle}</td><td>${t.AssignedTo_Email}</td><td>${t.PlannedDueDate||''}</td><td><span class="status-badge badge-amber">Not Started</span></td><td>0%</td>`;
-      document.getElementById('tasksTable').appendChild(tr);
-      // global card
-      const wrap = document.getElementById('globalTasksList');
-      const card = document.createElement('div'); card.className='task-item';
-      card.innerHTML = `<div><div class="task-title">${t.TaskTitle}</div><div class="task-meta"><span>${t.AssignedTo_Email}</span><span>Due: ${t.PlannedDueDate||''}</span><span>${t.ProjectID_FK}</span></div></div><div class="progress-circle"><span>0%</span></div>`;
-      wrap.appendChild(card);
-    }
-    function levelFromScore(score){
-      if (score>=16) return {txt:'Critical', cls:'badge-red', ico:'🔴'};
-      if (score>=10) return {txt:'High', cls:'badge-amber', ico:'🟠'};
-      if (score>=4) return {txt:'Medium', cls:'badge-amber', ico:'🟡'};
-      return {txt:'Low', cls:'badge-green', ico:'🟢'};
-    }
-    function appendRiskRow(r, scope='details'){
-      const score = Number(r.RiskProbability||0) * Number(r.RiskImpact||0);
-      const lvl = levelFromScore(score);
-      const rowHtml = `<tr><td>${r.RiskTitle}</td><td>${r.RiskCategory}</td><td>${score}</td><td><span class="status-badge ${lvl.cls}">${lvl.ico} ${lvl.txt}</span></td><td>${r.RiskStatus}</td><td>${r.RiskOwner_Email||''}</td></tr>`;
-      if (scope==='details') document.getElementById('risksTable').insertAdjacentHTML('beforeend', rowHtml);
-      const globalHtml = `<tr><td>${r.ProjectID_FK}</td><td>${r.RiskTitle}</td><td>${r.RiskCategory}</td><td>${score}</td><td>${lvl.txt}</td><td>${r.RiskStatus}</td><td>${r.RiskOwner_Email||''}</td></tr>`;
-      document.getElementById('globalRisksTable').insertAdjacentHTML('beforeend', globalHtml);
-      // update counters
-      const c = {critical:0, high:0, medium:0}; document.querySelectorAll('#globalRisksTable tr:not(:first-child)').forEach(tr=>{
-        const s = Number(tr.children[3].textContent||0);
-        if (s>=16) c.critical++; else if (s>=10) c.high++; else if (s>=4) c.medium++;
-      });
-      document.getElementById('riskCount').textContent = document.querySelectorAll('#globalRisksTable tr').length-1;
-      document.getElementById('riskCritical').textContent = c.critical + ' 🔴';
-      document.getElementById('riskHigh').textContent = c.high + ' 🟠';
-      document.getElementById('riskMedium').textContent = c.medium + ' 🟡';
-    }
-    function appendPartnerRow(p){
-      const tr = document.createElement('tr');
-      tr.innerHTML = `<td>${p.PartnerID_FK}</td><td>${p.PartnerRole}</td><td>${p.MOUStatus}</td><td>$${Number(p.ContractAmount||0).toLocaleString()}</td><td>${p.MOUExpiryDate||''}</td>`;
-      document.getElementById('partnersTable').appendChild(tr);
-    }
-    function appendBudgetRow(b){
-      const tr = document.createElement('tr');
-      tr.innerHTML = `<td>${b.BudgetCategory}</td><td>${b.LineDescription||''}</td><td>$${Number(b.BudgetedAmount||0).toLocaleString()}</td><td>${b.GrantID_FK||''}</td><td>${b.Owner_Email||''}</td>`;
-      document.getElementById('budgetTable').appendChild(tr);
-    }
-    function appendVisitCard(v){
-      const host = document.getElementById('visitsTimeline');
-      const box = document.createElement('div');
-      box.style.cssText = "margin-bottom:24px;position:relative;";
-      box.innerHTML = `
-        <div style="position:absolute;left:-30px;top:4px;width:12px;height:12px;border-radius:50%;background:var(--primary);border:3px solid var(--white);box-shadow:0 0 0 2px var(--border);"></div>
-        <div style="font-weight:600;color:var(--primary);margin-bottom:8px;">${v.VisitDate||''}</div>
-        <div style="background:var(--bg-light);padding:12px;border-radius:6px;">
-          <div style="font-weight:500;margin-bottom:4px;">🏥 ${v.SiteID_FK} - ${v.VisitPurpose}</div>
-          <div style="font-size:13px;color:var(--text-light);">Visited by: ${v.VisitedBy_Email||''} • ${v.HoursSpent||0} hours</div>
-          ${v.GeneralFindings? `<div style="font-size:13px;margin-top:6px;">${v.GeneralFindings}</div>`:''}
-        </div>`;
-      host.appendChild(box);
-    }
-    function appendImpactRow(ir){
-      const tr = document.createElement('tr');
-      tr.innerHTML = `<td>${ir.ProjectID_FK}</td><td>${ir.IndicatorID_FK}</td><td>${ir.ReportingPeriod||''}</td><td>${ir.TargetValue||0}</td><td>${ir.ActualValue||0}</td><td>${ir.VerificationStatus||''}</td>`;
-      document.getElementById('impactResultsTable').appendChild(tr);
-    }
-
-    /* ====== SAVE HANDLERS ====== */
-    function saveProject(){
-      const org = document.getElementById('projOrg').value.trim().toUpperCase()||'ORG';
-      const year = Number(document.getElementById('projYear').value||new Date().getFullYear());
-      const seq = pad(Number(document.getElementById('projSeq').value||1));
-      const id = `${org}-${year}-${seq}`;
-      const title = document.getElementById('projTitle').value.trim();
-      const type = document.getElementById('projType').value;
-      const region = document.getElementById('projRegion').value;
-      const country = document.getElementById('projCountry').value.trim();
-      const status = document.getElementById('projStatus').value;
-      const start = document.getElementById('projStart').value;
-      const end = document.getElementById('projEnd').value;
-      const budget = Number(document.getElementById('projBudget').value||0);
-      const owner = ensureLowerEmail(document.getElementById('projOwner').value);
-
-      if(!notEmpty(title)) return toast('Title is required','error');
-      if(!notEmpty(start)||!notEmpty(end)) return toast('Start and End dates are required','error');
-      if(new Date(start)>new Date(end)) return toast('Start must be before End','error');
-      if(budget<0) return toast('Budget must be ≥ 0','error');
-      if(owner && !isEmail(owner)) return toast('Owner email is invalid','error');
-
-      const rec = { ProjectID_PK:id, ProjectTitle:title, ProjectType:type, ProjectRegion:region, ProjectCountry:country, ProjectStatus:status, ProjectStartDate:start, ProjectEndDate:end, TotalBudgetUSD:budget, ProjectOwner_Email:owner, ProjectHealth:'🟢 On Track' };
-      state.projects.push(rec);
-      appendProjectCard(rec);
-      // keep Project Details focused on the new project
-      openProjectDetails(id, title);
-      closePanel(); toast('Project saved');
-    }
-
-    function saveTeam(){
-      const proj = document.getElementById('teamProject').value.trim()||currentProjectId;
-      const email = ensureLowerEmail(document.getElementById('teamEmail').value);
-      const role = document.getElementById('teamRole').value;
-      const perm = document.getElementById('teamPerm').value;
-      const start = document.getElementById('teamStart').value;
-      if(!isEmail(email)) return toast('Valid user email is required','error');
-
-      const rec = { ProjectID_FK:proj, UserEmail_FK:email, PrimaryRole:role, PermissionLevel:perm, StartDate:start };
-      state.team.push(rec);
-      if(proj===currentProjectId) appendTeamRow(rec);
-      closePanel(); toast('Team member added');
-    }
-
-    function saveGrant(){
-      const proj = document.getElementById('grantProject').value.trim()||currentProjectId;
-      const donor = document.getElementById('grantDonor').value.trim();
-      const amount = Number(document.getElementById('grantAmount').value||0);
-      const curr = document.getElementById('grantCurrency').value;
-      const rate = Number(document.getElementById('grantRate').value||0);
-      const start = document.getElementById('grantStart').value;
-      const end = document.getElementById('grantEnd').value;
-      const status = document.getElementById('grantStatus').value;
-      const freq = document.getElementById('grantFreq').value;
-      const firstDue = document.getElementById('grantFirstDue').value;
-      if(!notEmpty(donor)) return toast('Donor ID is required','error');
-      if(amount<=0) return toast('Amount must be > 0','error');
-      if(rate<=0) return toast('Exchange rate must be > 0','error');
-      if(!notEmpty(start)||!notEmpty(end)) return toast('Start and End dates are required','error');
-      if(new Date(start)>=new Date(end)) return toast('Start must be before End','error');
-
-      const id = genId('GRANT');
-      const rec = { GrantID_PK:id, ProjectID_FK:proj, DonorID_FK:donor, GrantAmount:amount, GrantCurrency:curr, ExchangeRate:rate, GrantStartDate:start, GrantEndDate:end, GrantStatus:status, ReportingFrequency:freq, FirstReportDue:firstDue };
-      state.grants.push(rec);
-      if(proj===currentProjectId) appendGrantRow(rec,'details');
-      else appendGrantRow(rec,'global');
-      closePanel(); toast('Grant saved');
-    }
-
-    function saveTask(){
-      const proj = document.getElementById('taskProject').value.trim()||currentProjectId;
-      const title = document.getElementById('taskTitle').value.trim();
-      const assignee = ensureLowerEmail(document.getElementById('taskAssignee').value);
-      const priority = document.getElementById('taskPriority').value;
-      const start = document.getElementById('taskStart').value;
-      const due = document.getElementById('taskDue').value;
-      const type = document.getElementById('taskType').value;
-      const cat = document.getElementById('taskCategory').value;
-      if(!notEmpty(title)) return toast('Task title is required','error');
-      if(!isEmail(assignee)) return toast('Valid assignee email required','error');
-      if(!notEmpty(due)) return toast('Due date is required','error');
-      if(start && new Date(start)>new Date(due)) return toast('Start must be ≤ Due','error');
-
-      const id = genId('TASK');
-      const rec = { TaskID_PK:id, ProjectID_FK:proj, TaskTitle:title, AssignedTo_Email:assignee, TaskPriority:priority, PlannedStartDate:start, PlannedDueDate:due, TaskType:type, TaskCategory:cat, TaskStatus:'Not Started', PercentComplete:0 };
-      state.tasks.push(rec);
-      if(proj===currentProjectId) appendTaskRow(rec);
-      // also show in global tasks list
-      appendTaskRow(rec);
-      closePanel(); toast('Task saved');
-    }
-
-    function saveRisk(){
-      const proj = document.getElementById('riskProject').value.trim()||currentProjectId;
-      const title = document.getElementById('riskTitle').value.trim();
-      const cat = document.getElementById('riskCategory').value;
-      const status = document.getElementById('riskStatus').value;
-      const prob = Number(document.getElementById('riskProb').value||0);
-      const imp = Number(document.getElementById('riskImpact').value||0);
-      const owner = ensureLowerEmail(document.getElementById('riskOwner').value);
-      const plan = document.getElementById('riskPlan').value.trim();
-      const due = document.getElementById('riskDue').value;
-      if(!notEmpty(title)) return toast('Risk title is required','error');
-      if(!(prob>=1&&prob<=5) || !(imp>=1&&imp<=5)) return toast('Probability/Impact must be 1–5','error');
-
-      const id = genId('RISK');
-      const rec = { RiskID_PK:id, ProjectID_FK:proj, RiskTitle:title, RiskCategory:cat, RiskStatus:status, RiskProbability:prob, RiskImpact:imp, RiskOwner_Email:owner, MitigationPlan:plan, MitigationDueDate:due };
-      state.risks.push(rec);
-      appendRiskRow(rec, proj===currentProjectId?'details':'global');
-      closePanel(); toast('Risk saved');
-    }
-
-    function savePartner(){
-      const proj = document.getElementById('partnerProject').value.trim()||currentProjectId;
-      const pid = document.getElementById('partnerId').value.trim();
-      const role = document.getElementById('partnerRole').value;
-      const mou = document.getElementById('partnerMou').value;
-      const sign = document.getElementById('partnerSign').value;
-      const exp = document.getElementById('partnerExpiry').value;
-      const amt = Number(document.getElementById('partnerAmt').value||0);
-      if(!notEmpty(pid)) return toast('Partner ID is required','error');
-      if(amt<0) return toast('Contract amount must be ≥ 0','error');
-
-      const id = genId('PPART');
-      const rec = { ProjectPartnerID_PK:id, ProjectID_FK:proj, PartnerID_FK:pid, PartnerRole:role, MOUStatus:mou, MOUSignDate:sign, MOUExpiryDate:exp, ContractAmount:amt };
-      state.partners.push(rec);
-      if(proj===currentProjectId) appendPartnerRow(rec);
-      closePanel(); toast('Partner added');
-    }
-
-    function saveBudget(){
-      const proj = document.getElementById('budgetProject').value.trim()||currentProjectId;
-      const cat = document.getElementById('budgetCategory').value;
-      const amt = Number(document.getElementById('budgetAmount').value||0);
-      const desc = document.getElementById('budgetDesc').value.trim();
-      const grant = document.getElementById('budgetGrant').value.trim();
-      const owner = ensureLowerEmail(document.getElementById('budgetOwner').value);
-      if(amt<0) return toast('Budgeted amount must be ≥ 0','error');
-      const id = genId('BUDG');
-      const rec = { BudgetLineID_PK:id, ProjectID_FK:proj, BudgetCategory:cat, BudgetedAmount:amt, LineDescription:desc, GrantID_FK:grant||'', Owner_Email:owner||'' };
-      state.budgets.push(rec);
-      if(proj===currentProjectId) appendBudgetRow(rec);
-      closePanel(); toast('Budget line added');
-    }
-
-    function saveVisit(){
-      const proj = document.getElementById('visitProject').value.trim()||currentProjectId;
-      const site = document.getElementById('visitSite').value.trim();
-      const date = document.getElementById('visitDate').value;
-      const purpose = document.getElementById('visitPurpose').value;
-      const by = ensureLowerEmail(document.getElementById('visitBy').value);
-      const role = document.getElementById('visitRole').value.trim();
-      const companions = document.getElementById('visitCompanions').value.trim();
-      const hours = Number(document.getElementById('visitHours').value||0);
-      const agenda = document.getElementById('visitAgenda').value.trim();
-      const findings = document.getElementById('visitFindings').value.trim();
-      if(!notEmpty(site)) return toast('Site ID is required','error');
-      if(!notEmpty(date)) return toast('Visit date is required','error');
-
-      const id = genId('VISIT');
-      const rec = { VisitID_PK:id, ProjectID_FK:proj, SiteID_FK:site, VisitDate:date, VisitPurpose:purpose, VisitedBy_Email:by, VisitedBy_Role:role, CompanionEmails:companions, HoursSpent:hours, VisitAgenda:agenda, GeneralFindings:findings };
-      state.visits.push(rec);
-      appendVisitCard(rec);
-      closePanel(); toast('Visit recorded');
-    }
-
-    function saveImpact(){
-      const proj = document.getElementById('impactProject').value.trim()||currentProjectId;
-      const ind = document.getElementById('impactIndicator').value.trim();
-      const period = document.getElementById('impactPeriod').value.trim();
-      const start = document.getElementById('impactStart').value;
-      const end = document.getElementById('impactEnd').value;
-      const target = Number(document.getElementById('impactTarget').value||0);
-      const actual = Number(document.getElementById('impactActual').value||0);
-      const verify = document.getElementById('impactVerify').value;
-      const verifiedBy = ensureLowerEmail(document.getElementById('impactVerifiedBy').value);
-      if(!notEmpty(ind)) return toast('Indicator ID is required','error');
-      if(!notEmpty(period)) return toast('Reporting Period is required','error');
-      if(start && end && new Date(start)>new Date(end)) return toast('Period Start must be ≤ End','error');
-      if(target<0 || actual<0) return toast('Target/Actual must be ≥ 0','error');
-
-      const id = genId('IREP');
-      const rec = { ReportingID_PK:id, ProjectID_FK:proj, IndicatorID_FK:ind, ReportingPeriod:period, ReportingStartDate:start, ReportingEndDate:end, TargetValue:target, ActualValue:actual, VerificationStatus:verify, VerifiedBy_Email:verifiedBy };
-      state.impact.push(rec);
-      appendImpactRow(rec);
-      closePanel(); toast('Result saved');
-    }
-
-    // Prefill default project into form inputs on load
-    window.addEventListener('DOMContentLoaded', ()=>{
-      ['teamProject','grantProject','taskProject','riskProject','partnerProject','budgetProject','visitProject','impactProject']
-        .forEach(id=>{ const el=document.getElementById(id); if(el) el.value=currentProjectId; });
-
-      // seed filters with two known IDs for demo
-      ['filterTasksProject','filterGrantsProject','filterVisitsProject','filterImpactProject'].forEach(fid=>{
-        const sel=document.getElementById(fid); if(!sel) return;
-        ['HFH-2026-001','WB-2025-045'].forEach(pid=>{
-          if (![...sel.options].some(o=>o.value===pid)){ const opt=document.createElement('option'); opt.value=opt.textContent=pid; sel.appendChild(opt); }
-        })
-      });
-    });
-  </script>
+            if (value === "") {
+                outputBlock.textContent = "❌ Please enter some text before clicking execution!";
+                outputBlock.className = ""; 
+                outputBlock.style.background = "rgba(239, 68, 68, 0.15)";
+                outputBlock.style.color = "#f87171";
+                outputBlock.style.border = "1px solid rgba(239, 68, 68, 0.3)";
+            } else {
+                outputBlock.textContent = `✅ Success! Hello, ${value}. The script environment is fully operational.`;
+                outputBlock.className = "success-style";
+            }
+            
+            outputBlock.style.display = "block";
+        });
+    </script>
 </body>
 </html>
