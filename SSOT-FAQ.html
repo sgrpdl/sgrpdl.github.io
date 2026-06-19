@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html><head><meta charset="UTF-8"><title>SSOT FAQ V4</title>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>SSOT FAQ V5</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:'Segoe UI',sans-serif;background:#f5f5f5;color:#000;line-height:1.6}
@@ -16,7 +16,7 @@ body{font-family:'Segoe UI',sans-serif;background:#f5f5f5;color:#000;line-height
 #panel .stat{margin:8px 0}
 #panel .lvl{display:inline-block;background:#00AFD7;color:#fff;padding:4px 10px;border-radius:12px;font-weight:600;margin-top:5px}
 #panel button{background:#002F6C;color:#fff;border:0;padding:8px 14px;border-radius:8px;margin-top:12px;font-size:12px;font-weight:600;cursor:pointer;width:100%}
-.wrap{max-width:780px;margin:25px auto;padding:0 20px 50px}
+.wrap{max-width:820px;margin:25px auto;padding:0 20px 50px}
 .cat{margin-bottom:15px;border:1px solid #e0e0e0;border-radius:10px;overflow:hidden;background:#fff}
 .ch{background:#F8F9FA;padding:14px 18px;cursor:pointer;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #e0e0e0}
 .ch:hover{background:#EEF7FA}
@@ -24,86 +24,222 @@ body{font-family:'Segoe UI',sans-serif;background:#f5f5f5;color:#000;line-height
 .ch .cnt{font-size:11px;color:#fff;background:#00AFD7;padding:2px 9px;border-radius:10px;margin-left:8px}
 .ch .check{color:#4CAF50;font-size:18px;margin-left:8px}
 .cb{display:none}
-.qa{border-bottom:1px solid #f0f0f0;padding:8px 18px}
+.qa{border-bottom:1px solid #f0f0f0;padding:10px 18px}
 .qa:last-child{border:none}
 .q{padding:8px 0;cursor:pointer;font-weight:600;font-size:14px;color:#1a1a1a}
-.a{padding:8px 0 12px;font-size:13.5px;color:#444;display:none;line-height:1.7}
+.a{padding:8px 0 12px;font-size:13.5px;color:#444;display:none;line-height:1.75}
+.hl{background:#E6F7FB;border-left:4px solid #00AFD7;padding:10px 14px;border-radius:0 8px 8px 0;margin:10px 0;font-weight:500;font-size:13px}
 .rb{background:#00AFD7;color:#fff;border:0;padding:6px 12px;border-radius:6px;font-size:12px;cursor:pointer;margin-top:8px}
 .rb.done{background:#4CAF50}
 .ft{text-align:center;padding:25px;color:#888;font-size:12px;border-top:1px solid #ddd;background:#fff;margin-top:30px}
 .ft strong{color:#002F6C}
-@media(max-width:900px){#panel{position:relative;right:0;top:0;width:auto;margin:15px}}
+@media(max-width:980px){#panel{position:relative;right:0;top:0;width:auto;margin:15px}}
 </style></head><body>
 <div id="modal"><div class="box"><h2>Welcome</h2><p>Enter your name to track progress and earn badges</p><input id="nm" placeholder="Your name"><br><button onclick="sv()">Start Reading</button></div></div>
-<div class="header"><h1>SSOT FAQ V4 — Interactive</h1><p>Earn your badge by reading through the FAQ</p></div>
-<div id="panel"><h3 id="un">Hello</h3><div class="stat">Read: <strong id="rc">0</strong>/50</div><div class="stat">Categories: <strong id="cc">0</strong>/11</div><div class="stat">Level: <span class="lvl" id="lv">Start</span></div><button onclick="pb()">📥 Print My Badge</button><button onclick="rs()" style="background:#888;font-size:11px;margin-top:8px">Reset Progress</button></div>
+<div class="header"><h1>SSOT FAQ  — Interactive</h1><p>Read, mark, earn badges, and print your achievement</p></div>
+<div id="panel"><h3 id="un">Hello</h3><div class="stat">Read: <strong id="rc">0</strong>/50</div><div class="stat">Categories: <strong id="cc">0</strong>/11</div><div class="stat">Level: <span class="lvl" id="lv">Start</span></div><button onclick="pb()">Print My Badge</button><button onclick="rs()" style="background:#888;font-size:11px;margin-top:8px">Reset Progress</button></div>
 <div class="wrap" id="main"></div>
-<div class="ft">Prepared by <strong>Sagar Poudel</strong> | HFHI</div>
+<div class="ft">Prepared by <strong>Sagar Poudel</strong> | Any Question Contact AP IT | HFHI</div>
 <script>
-var DATA=[
-[0,'We are moving to Workday. Replace SSOT?','Different purposes. Workday handles structured data. SSOT handles operational documents.'],
-[0,'Is it worth the change?','Small effort per person. Big organisational impact.'],
-[0,'How to gauge SSOT value?','Frequency, risk, dependency. If any is high, SSOT pays off.'],
-[0,'Why now?','Prevention, not a fix for something broken today.'],
-[0,'Mandatory or optional?','Direction not optional. Pace can flex.'],
-[0,'Department framework?','One rulebook, different playbooks per department.'],
-[1,'Teams SP vs Filing Site?','Teams SP is the workshop. Filing Site is the vault.'],
-[1,'Just create Filed folder?','Inherits Team access. Filing Site is structurally different.'],
-[1,'OneDrive for final?','Personal storage. Lost when owner leaves.'],
-[1,'OneDrive for collaboration?','Breaks on departure. No shared ownership.'],
-[1,'Need Power Apps?','Optional experience layer.'],
-[2,'Library vs Folder vs Doc Set?','Cabinet, divider, envelope with shared tags.'],
-[2,'Always use Document Sets?','Only when files belong together as a unit.'],
-[2,'Abbreviate department names?','No. Readability wins over character optimisation.'],
-[2,'HR Library naming?','Same standard applies everywhere.'],
-[2,'Where do templates go?','Teams for team templates. Filing Site for org-wide.'],
-[2,'One Content Type or more?','One when columns match. More only when needed.'],
-[2,'Why lifecycle folders?','Visible conveyor belt from Drafts to Approved.'],
-[3,'When new channel?','When topic needs ongoing space and files.'],
-[3,'All collab needs channel?','No. Only ongoing visible work.'],
-[3,'Chat vs Channel?','Chat is fast for you. Channels for everyone.'],
-[4,'Consultant channel access?','Default no. File-level sharing with expiry.'],
-[4,'Who to contact?','AP IT (Sagar) and HR focal point.'],
-[4,'Separate Team for consultant?','Usually no. Dedicated channel is enough.'],
-[4,'Add consultant to channels?','Not by default. HFHI email enables Shared Channel option.'],
-[4,'External partners?','No direct site access. Share file links with expiry.'],
-[5,'Confidential files in search?','No. SharePoint search respects permissions.'],
-[5,'Who controls access?','Site owners and IT. Group-based access.'],
-[5,'When someone leaves?','Filing Site documents are unaffected.'],
-[6,'What is metadata?','Like Amazon filters for documents.'],
-[6,'Tagging extra work?','Thirty seconds per document.'],
-[6,'Folders vs metadata?','Folders hide. Metadata reveals.'],
-[6,'Find older documents?','Less effort. Less searching. Less guessing.'],
-[6,'Who creates tags?','Department brainstorms together.'],
-[7,'Content Owner?','Person closest to the document.'],
-[7,'Move all existing docs?','No. Start with new going forward.'],
-[7,'Email attachments?','Email for communication. Not storage.'],
-[7,'What goes in Filing Site?','Final, organisational, audit-worthy documents.'],
-[7,'Country office policy?','Keep Policy Review Record. Not their policy.'],
-[7,'Retention support?','SSOT is foundation. Retention builds on top.'],
-[8,'AI mistakes?','Expected. Agent is first filter, not decision maker.'],
-[8,'AI-tailored CVs?','HR reviews. AI narrows pile. Humans judge people.'],
-[8,'TalentPilot availability?','Available to all offices.'],
-[8,'Token in free plan?','Yes. Included with usage limits.'],
-[8,'Token cost by file type?','Markdown lowest. Images highest. MarkItDown solves it.'],
-[8,'PII safety?','Per Microsoft governance. Data stays in tenant.'],
-[8,'Paste CVs in Excel?','Script handles markdown conversion automatically.'],
-[8,'AI for other HR tasks?','Yes, after data is structured.'],
-[9,'IKC difference?','IKC is global library. Filing Site is operational records.'],
-[10,'How employees fill HREM data?','Employees use form links. HR uses portal.']
-];
 var CATS=['Do We Really Need This?','Tools and Technology','Libraries & Naming','Channels','External Collaboration','Security and Access','Metadata','Adoption','AI / TalentPilot','IKC','HREM Portal'];
-var ICONS=['🤔','⚙️','📁','💬','🌐','🔒','🔍','📋','🤖','🌏','💻'];
+var ICONS=['&#x1F914;','&#x2699;&#xFE0F;','&#x1F4C1;','&#x1F4AC;','&#x1F310;','&#x1F512;','&#x1F50D;','&#x1F4CB;','&#x1F916;','&#x1F30F;','&#x1F4BB;'];
+var DATA=[[0,'We are moving to Workday. Will Workday replace SSOT or overlap with it?','They serve different purposes. Workday is the system of record for structured business data — including HR, finance, and procurement — and stores attachments tied to its processes.<br><br>SSOT is about operational documents across the whole organisation — agreements, budgets, policies, donor contracts, board minutes, project reports, audit evidence — which do not belong inside Workday. No overlap.<div class="hl">Workday handles structured data and its own attachments. SSOT handles operational documents across the organisation.</div>'],
+[0,'This sounds like a lot of change. Is it worth it?','The change is small per person — thirty seconds of tagging, using channels instead of chat for document work, and moving approved files to the Filing Site. The impact is organisational — documents become findable, trustable, and protected.'],
+[0,'How do we know if SSOT effort is worth it for our department?','Look at three factors: <strong>frequency</strong> (how often the team reuses or references the documents), <strong>risk</strong> (what happens if documents are duplicated, outdated, or lost), and <strong>dependency</strong> (how much programs, audits, donors, or leadership rely on those documents). When even one of these is high, SSOT pays for itself quickly.<div class="hl">Frequency. Risk. Dependency. If any is high — SSOT pays for itself.</div>'],
+[0,'We have been working fine without this. Why now?','It works until it does not. When someone leaves, when an auditor asks, when a donor needs evidence — that is when the gap shows. This is prevention, not a fix for something broken today.'],
+[0,'Is this mandatory or optional?','The model is the standard. How fast each department adopts it can be phased. But the direction is not optional — this is how we manage documents going forward.'],
+[0,'Does each department need their own SSOT framework?','The model is the same for everyone — lifecycle, naming, filing discipline. What differs is the scope and content. Each department defines their own document types, metadata values, and Filing Site libraries within the same framework.<div class="hl">One rulebook. Different playbooks per department.</div>'],
+[1,'What is the difference between Teams SharePoint and the Filing Site?','Teams SharePoint is created automatically with every Team. Everyone in the Team has access. It is the workshop storage.<br><br>The Filing Site is a separate SharePoint site. No Team attached. Controlled access. Metadata enforced. It is the vault.<div class="hl">If the Team is deleted, the vault survives.</div>'],
+[1,'Can we just create a Filed folder inside Teams instead?','You can. But it still inherits Team-level access, still mixes with working files, and still depends on the Team existing. A Filing Site has its own access, metadata, and retention.<div class="hl">A folder is a label. A Filing Site is a commitment.</div>'],
+[1,'Why can we not use OneDrive for final documents?','OneDrive is personal storage tied to one person&rsquo;s account. When that person leaves, their OneDrive is deactivated. The organisation loses access. Final documents must live in a place the organisation controls — not a place one person controls.'],
+[1,'Why can we not use OneDrive for collaboration?','OneDrive is personal storage. If you leave, every link breaks. There is no shared ownership. And version confusion grows quickly.<div class="hl">Teams Channels solve all three. Files live in a shared space. If someone leaves, the files stay.</div>'],
+[1,'Do we need Power Apps? Can we just use SharePoint?','SharePoint handles the data and documents. Power Apps is the experience layer — one screen, everything connected. You can start with SharePoint only and add Power Apps when ready. The model works either way.'],
+[2,'What is the difference between a library, a folder, and a Document Set?','A <strong>library</strong> is a filing cabinet — supports metadata, versioning, permissions, retention, and search.<br><br>A <strong>folder</strong> is a divider tab inside that cabinet. Groups files visually but adds nothing — no shared metadata, no workflows.<br><br>A <strong>Document Set</strong> is a labelled envelope. It groups related files together AND shares metadata across all of them automatically.<div class="hl">Library = cabinet. Folder = divider. Document Set = labelled envelope with shared tags.</div>'],
+[2,'Should we always use Document Sets, or only sometimes?','Only when files naturally belong together as a unit. Employee files (offer letter, ID, certificates) are a perfect Document Set. Standalone reports, plans, or surveys do not need them — a standard library with metadata is enough.<div class="hl">Document Sets when documents belong together. Standard library when documents stand alone.</div>'],
+[2,'Should we abbreviate department names to save URL characters?','No. Naming clarity wins over character optimisation. Names should remain readable and self-explanatory. URL length is managed through clean structure and avoiding deep folder nesting — not by shortening departmental terms.<div class="hl">Keep names readable. Manage URL length through structure.</div>'],
+[2,'Does HR Library need to follow the same strict naming convention?','Yes. Same standard: DocType – Subject – YYMMDD. The library gives context, metadata gives filtering, but the file name must still be self-describing because files travel outside SharePoint.<div class="hl">Same naming rule applies everywhere — files travel beyond the library.</div>'],
+[2,'Where do help files, templates, and supporting documents go?','It depends on purpose. Templates and team-specific helper files belong in Teams (workshop). Finalised, organisation-relevant reference materials belong in the Filing Site (vault). Personal cheat sheets stay in OneDrive.'],
+[2,'Should we use one Content Type or multiple?','Use one Content Type when the columns and metadata are the same. Add more only when you genuinely need different columns, default templates, or retention rules per category. Starting with one is the right call for low-to-medium volume.'],
+[2,'Why is the Shared tab structured as Drafts &rarr; In Review &rarr; For Approval &rarr; Approved – To File?','This represents the lifecycle of a document inside the workshop. Documents move through these stages and end up in the Filing Site once approved. It is the visible conveyor belt of the SSOT model.'],
+[3,'When should we create a new channel?','When a topic needs its own ongoing conversation and files. Do not create channels for one-off discussions, two-person work, or topics that will be inactive within a week.<div class="hl">Too many channels is as bad as too few.</div>'],
+[3,'Do all collaborations need a channel?','No. Channels are for ongoing, team-visible work. Quick decisions belong in chat. Weekly project work belongs in a channel. The test: will this matter to the team beyond today?'],
+[3,'Group chat is faster than channels. Why should I switch?','Group chat is faster for you in the moment. But it is invisible to everyone else. Six months later, nobody can find that decision or document. Use @mentions in channels — same speed as chat, but the conversation stays searchable.<div class="hl">Chat is fast for you. Channels are fast for everyone.</div>'],
+[4,'Will external consultants be able to use channels for collaboration?','External consultants are handled carefully, case by case. Normally, we do not add external consultants to any team channels — Standard, Private, or Shared.<br><br>When document collaboration is needed, files are shared from the Standard channel&rsquo;s shared folder using secure SharePoint links with expiry and limited permissions. This ensures the consultant only sees the specific files shared, with no access to the team workspace or sensitive content.<br><br>If broader collaboration is required, the setup is reviewed and approved by IT in coordination with HR.<div class="hl">By default — file-level sharing with expiry from the Standard channel&rsquo;s shared folder. No team access.</div>'],
+[4,'Who in AP IT/HR should we contact for consultant setup?','Please contact AP IT (Sagar Poudel) and the respective HR focal point who manages the consultant engagement. We will review the use case together and recommend the most appropriate setup.'],
+[4,'Do we need to create a separate Team for short-term consultants?','Usually no. Controlled file/folder sharing from a Standard channel is enough for most engagements. A separate Team is created only when the consultant works with multiple internal teams, the engagement involves cross-functional collaboration, or governance/audit isolation is required.'],
+[4,'Can external consultants be added to Standard, Private, or Shared channels?','Not by default. External consultants are not added to any team channels.<br><br>For collaboration, only secure file/folder sharing from a Standard channel&rsquo;s shared folder applies — with expiry and limited permissions. We do not share from Private or Shared channels to keep governance clean.<div class="hl">No channel membership. File-level sharing from Standard channel&rsquo;s shared folder with expiry.</div>'],
+[4,'What about external partners — auditors, vendors, NGOs?','External partners never get direct access to Filing Sites or Teams. For short-term collaboration, share a specific file link from your Standard channel&rsquo;s shared folder with an expiry date. Treat all external partners as outside users — no channel membership, only file-level sharing with controlled access and expiry.'],
+[5,'Can people find my confidential files through search?','No. SharePoint search respects permissions. If you do not have access to a document, it does not appear in your search results.<div class="hl">Findable means findable by the right people — invisible to everyone else.</div>'],
+[5,'Who controls access to the Filing Site?','Site owners — typically a designated person within the department and IT. Access is managed through SharePoint groups by role, not individual sharing.'],
+[5,'What happens when someone leaves the organisation?','Their OneDrive is deactivated after a retention period. Any files only in their OneDrive are at risk. Documents in the Filing Site are unaffected — they belong to the organisation.<div class="hl">That is the whole point.</div>'],
+[6,'What is metadata?','Think of Amazon. When you search for a laptop, you filter by brand, RAM, storage. Those filters are metadata. Same principle — tag a document with type, department, year, status — and anyone can find it in three clicks.'],
+[6,'Is tagging extra work?','Thirty seconds per document. Four tags. That thirty seconds saves hours of searching later — not just for you, but for everyone who comes after you.'],
+[6,'Can we just use folders instead of metadata?','Folders hide documents behind paths. If you do not know the path, you are guessing. Metadata lets you filter and search by meaning.<div class="hl">Folders are Amazon with no filters. Metadata is Amazon with filters.</div>'],
+[6,'How will SSOT help when someone needs to find an older document?','The combination of consistent naming, metadata tagging, and proper filing means a document can be found by meaning — type, department, year, status — without depending on memory or knowing the exact folder.<div class="hl">Less effort. Less searching. Less guessing.</div>'],
+[6,'Who creates the metadata tags?','The department brainstorms together. The team agrees on a small set of columns. IT can support with training and setup. Four to six columns is the sweet spot — enough to filter, not enough to overwhelm.'],
+[7,'Who is the Content Owner?','The person closest to the document. The one who knows it is final and approved. Not IT. Not a senior leader.<div class="hl">The person who owns the work owns the filing.</div>'],
+[7,'Do we have to move all existing documents to Filing Sites?','No. Start with new documents going forward. Migrate critical legacy documents in phases.<div class="hl">Do not look backwards and panic. Look forward and be consistent.</div>'],
+[7,'What about email attachments?','Email is for communication, not storage. If a document is approved and final, file it in the Filing Site. The email can reference the link.'],
+[7,'What files go to the Filing Site?','Most files never should. The vault is for documents the organisation needs to find, trust, and defend.<br><br>Three-question test: Is it final and approved? Would someone else need this after I am gone? Would we need it for an audit, donor, or board?'],
+[7,'I supported a country office policy. Should I keep their policy in my Filing Site?','No. Keep a Policy Review Record instead — a short record showing the review, gaps identified, template provided, and outcome. The country office owns and stores their policy. You keep evidence of support, not duplicate copies.<div class="hl">Own the document &rarr; file the document. Supported the document &rarr; file the review record.</div>'],
+[7,'How does SSOT support record retention?','Record retention is one of the core problems SSOT is designed to address. As we move into adoption, retention rules and archival practices will be built on top of this foundation.<div class="hl">SSOT is the foundation. Retention is what we build on top.</div>'],
+[8,'What if the AI agent makes mistakes?','It will. That is expected. The agent is a first filter, not the decision maker. HR reviews every shortlist.<div class="hl">AI saves the reading time — not the thinking time.</div>'],
+[8,'Applicants are using AI to tailor CVs. Will the agent just pick those?','Yes — candidates are optimising CVs with AI. The agent may score those higher on keyword match. But HR stays in the loop. HR interviews and verifies what is real. The agent also evaluates experience depth, role relevance, and career progression.<div class="hl">AI narrows the pile. Humans judge the people.</div>'],
+[8,'Is TalentPilot available for all offices?','Currently built on Microsoft Copilot Agent Builder free tier. Any office can use it. Setup documentation will be shared to support rollout.'],
+[8,'Will the token usage be available in our existing M365 license?','Yes. Microsoft Copilot Agent Builder is included in our existing M365 licenses. Agents like TalentPilot can be created and used without additional licensing under the Free Copilot plan, with usage limits applied by Microsoft. For high-volume use cases, a Copilot premium license may need to be considered in future.'],
+[8,'Does AI token usage differ based on file type?','Yes. Markdown (.md) files use the least tokens because they are already clean and structured. Text-based PDFs use moderate tokens. Scanned PDFs require OCR processing and use more. Image files consume the most. This is why our setup uses MarkItDown to convert CVs into clean markdown automatically.<div class="hl">Markdown = lowest cost. Images = highest cost. MarkItDown solves it.</div>'],
+[8,'How safe is it to upload documents like CVs to the AI agent?','As per Microsoft&rsquo;s enterprise governance, the AI agent operates entirely inside HFHI&rsquo;s Microsoft 365 tenant. Per Microsoft&rsquo;s commitment: data stays within our tenant boundary, it is not used to train Microsoft&rsquo;s AI models, it is encrypted in transit and at rest, and access follows existing Microsoft 365 permissions. PII handling responsibilities still apply on our side.<div class="hl">As per Microsoft — same enterprise governance as Copilot. PII discretion still applies.</div>'],
+[8,'Can we paste CVs into Excel sheets for AI screening?','That works for small volumes. The current setup uses a script (MarkItDown) that converts all CVs to clean markdown automatically — keeping it simple for larger batches and avoiding manual copy-paste.'],
+[8,'Can AI be used for other HR tasks?','Yes. Once data is structured, AI can help with policy lookups, onboarding checklists, FAQ responses, and more. TalentPilot is the first use case.'],
+[9,'What about IKC? Does this replace it?','IKC — the International Knowledge Center — is HFHI&rsquo;s global knowledge platform managed by a dedicated team. Not everyone can upload. Content is reviewed, curated, and published organisation-wide.<br><br>SSOT is different — day-to-day operational documents at AP, national, and country office level. Different purpose. Different audience. Both needed.<div class="hl">IKC = global library. Filing Site = your office&rsquo;s operational records. Both needed.</div>'],
+[10,'The Filing Site is restricted to HR. How do employees fill their own data?','Employees never access the Filing Site directly. When HR needs employees to update their details, employees receive a form link. They fill the form, submit, done. The form writes directly to the list inside Filing - HR. Only HR accesses the site through the Power Apps portal.<div class="hl">HR uses the portal. Employees use form links. The vault stays sealed.</div>']
+];
+
 function sv(){var n=document.getElementById('nm').value.trim();if(!n)return;localStorage.setItem('ssotUser',n);document.getElementById('modal').style.display='none';init()}
-function rs(){if(confirm('Reset progress?')){localStorage.removeItem('ssotRead');localStorage.removeItem('ssotUser');location.reload()}}
+function rs(){if(confirm('Reset all progress?')){localStorage.removeItem('ssotRead');localStorage.removeItem('ssotUser');location.reload()}}
 function init(){var u=localStorage.getItem('ssotUser')||'Friend';document.getElementById('un').innerText='Hello, '+u;render();update()}
-function render(){var html='';for(var c=0;c<CATS.length;c++){var qs=[];for(var j=0;j<DATA.length;j++)if(DATA[j][0]===c)qs.push(j);if(qs.length===0)continue;html+='<div class="cat"><div class="ch" onclick="tC(this)"><h2>'+ICONS[c]+' '+CATS[c]+' <span class="cnt">'+qs.length+'</span><span class="check" id="chk'+c+'" style="display:none">✓</span></h2><span>▼</span></div><div class="cb">';for(var i=0;i<qs.length;i++){var idx=qs[i];var read=isRead(idx);html+='<div class="qa"><div class="q" onclick="tQ(this)">Q'+(idx+1)+': '+DATA[idx][1]+'</div><div class="a">'+DATA[idx][2]+'<br><button class="rb '+(read?'done':'')+'" onclick="mr('+idx+',this)">'+(read?'✓ Read':'Mark as Read')+'</button></div></div>'}html+='</div></div>'}document.getElementById('main').innerHTML=html;updateCheckmarks()}
+function render(){
+  var html='';
+  for(var c=0;c<CATS.length;c++){
+    var qs=[];
+    for(var j=0;j<DATA.length;j++)if(DATA[j][0]===c)qs.push(j);
+    if(qs.length===0)continue;
+    html+='<div class="cat"><div class="ch" onclick="tC(this)"><h2>'+ICONS[c]+' '+CATS[c]+' <span class="cnt">'+qs.length+'</span><span class="check" id="chk'+c+'" style="display:none">&#10003;</span></h2><span>&#9660;</span></div><div class="cb">';
+    for(var i=0;i<qs.length;i++){
+      var idx=qs[i];
+      var read=isRead(idx);
+      html+='<div class="qa"><div class="q" onclick="tQ(this)">Q'+(idx+1)+': '+DATA[idx][1]+'</div><div class="a">'+DATA[idx][2]+'<br><button class="rb '+(read?'done':'')+'" onclick="mr('+idx+',this)">'+(read?'&#10003; Read':'Mark as Read')+'</button></div></div>';
+    }
+    html+='</div></div>';
+  }
+  document.getElementById('main').innerHTML=html;
+  updateCheckmarks();
+}
 function tC(e){var b=e.nextElementSibling;b.style.display=b.style.display==='block'?'none':'block'}
 function tQ(e){var a=e.nextElementSibling;a.style.display=a.style.display==='block'?'none':'block'}
 function isRead(i){var r=JSON.parse(localStorage.getItem('ssotRead')||'[]');return r.indexOf(i)>=0}
-function mr(i,btn){var r=JSON.parse(localStorage.getItem('ssotRead')||'[]');var ix=r.indexOf(i);if(ix>=0){r.splice(ix,1);btn.classList.remove('done');btn.innerHTML='Mark as Read'}else{r.push(i);btn.classList.add('done');btn.innerHTML='✓ Read'}localStorage.setItem('ssotRead',JSON.stringify(r));update();updateCheckmarks()}
-function update(){var r=JSON.parse(localStorage.getItem('ssotRead')||'[]');var n=r.length;document.getElementById('rc').innerText=n;var cc=0;for(var c=0;c<CATS.length;c++){var qs=[];for(var j=0;j<DATA.length;j++)if(DATA[j][0]===c)qs.push(j);if(qs.length===0)continue;var all=true;for(var i=0;i<qs.length;i++)if(r.indexOf(qs[i])<0){all=false;break}if(all)cc++}document.getElementById('cc').innerText=cc;var lv='Start',col='#888';if(n>=50){lv='🏆 SSOT Champion';col='#9C27B0'}else if(n>=40){lv='🥇 Gold';col='#FFC107'}else if(n>=25){lv='🥈 Silver';col='#9E9E9E'}else if(n>=10){lv='🥉 Bronze';col='#CD7F32'}document.getElementById('lv').innerText=lv;document.getElementById('lv').style.background=col}
-function updateCheckmarks(){var r=JSON.parse(localStorage.getItem('ssotRead')||'[]');for(var c=0;c<CATS.length;c++){var qs=[];for(var j=0;j<DATA.length;j++)if(DATA[j][0]===c)qs.push(j);if(qs.length===0)continue;var all=true;for(var i=0;i<qs.length;i++)if(r.indexOf(qs[i])<0){all=false;break}var chk=document.getElementById('chk'+c);if(chk)chk.style.display=all?'inline':'none'}}
-function pb(){var u=localStorage.getItem('ssotUser')||'Friend';var r=JSON.parse(localStorage.getItem('ssotRead')||'[]');var n=r.length;var lv='Reader',col='#00AFD7';if(n>=50){lv='SSOT Champion';col='#9C27B0'}else if(n>=40){lv='Gold Reader';col='#FFC107'}else if(n>=25){lv='Silver Reader';col='#9E9E9E'}else if(n>=10){lv='Bronze Reader';col='#CD7F32'}var c=document.createElement('canvas');c.width=1200;c.height=675;var x=c.getContext('2d');var g=x.createLinearGradient(0,0,1200,675);g.addColorStop(0,'#00AFD7');g.addColorStop(1,'#002F6C');x.fillStyle=g;x.fillRect(0,0,1200,675);x.fillStyle='rgba(255,255,255,0.1)';x.fillRect(50,50,1100,575);x.fillStyle='#fff';x.font='bold 36px Segoe UI';x.textAlign='center';x.fillText('SSOT — Document Management',600,150);x.font='bold 70px Segoe UI';x.fillText(lv,600,260);x.font='28px Segoe UI';x.fillText('Awarded to',600,340);x.font='bold 52px Segoe UI';x.fillText(u,600,410);x.font='22px Segoe UI';x.fillText(n+' of 50 questions read',600,475);x.font='18px Segoe UI';var d=new Date().toLocaleDateString('en-GB',{day:'numeric',month:'long',year:'numeric'});x.fillText(d,600,520);x.font='14px Segoe UI';x.fillText('HFHI',600,610);var l=document.createElement('a');l.download='SSOT_Badge_'+u.replace(/\s/g,'_')+'.png';l.href=c.toDataURL();l.click()}
-window.onload=function(){if(localStorage.getItem('ssotUser')){document.getElementById('modal').style.display='none';init()}}
-</script></body></html>
+function mr(i,btn){
+  var r=JSON.parse(localStorage.getItem('ssotRead')||'[]');
+  var ix=r.indexOf(i);
+  if(ix>=0){r.splice(ix,1);btn.classList.remove('done');btn.innerHTML='Mark as Read'}
+  else{r.push(i);btn.classList.add('done');btn.innerHTML='&#10003; Read'}
+  localStorage.setItem('ssotRead',JSON.stringify(r));
+  update();updateCheckmarks();
+}
+function update(){
+  var r=JSON.parse(localStorage.getItem('ssotRead')||'[]');
+  var n=r.length;
+  document.getElementById('rc').innerText=n;
+  var cc=0;
+  for(var c=0;c<CATS.length;c++){
+    var qs=[];
+    for(var j=0;j<DATA.length;j++)if(DATA[j][0]===c)qs.push(j);
+    if(qs.length===0)continue;
+    var all=true;
+    for(var i=0;i<qs.length;i++)if(r.indexOf(qs[i])<0){all=false;break}
+    if(all)cc++;
+  }
+  document.getElementById('cc').innerText=cc;
+  var lv='Start',col='#888';
+  if(n>=50){lv='SSOT Champion';col='#9C27B0'}
+  else if(n>=40){lv='Gold';col='#FFC107'}
+  else if(n>=25){lv='Silver';col='#9E9E9E'}
+  else if(n>=10){lv='Bronze';col='#CD7F32'}
+  document.getElementById('lv').innerText=lv;
+  document.getElementById('lv').style.background=col;
+}
+function updateCheckmarks(){
+  var r=JSON.parse(localStorage.getItem('ssotRead')||'[]');
+  for(var c=0;c<CATS.length;c++){
+    var qs=[];
+    for(var j=0;j<DATA.length;j++)if(DATA[j][0]===c)qs.push(j);
+    if(qs.length===0)continue;
+    var all=true;
+    for(var i=0;i<qs.length;i++)if(r.indexOf(qs[i])<0){all=false;break}
+    var chk=document.getElementById('chk'+c);
+    if(chk)chk.style.display=all?'inline':'none';
+  }
+}
+function pb(){
+  var u=localStorage.getItem('ssotUser')||'Friend';
+  var r=JSON.parse(localStorage.getItem('ssotRead')||'[]');
+  var n=r.length;
+  var lv='Reader',col='#00AFD7',sub='Keep going!';
+  if(n>=50){lv='SSOT Champion';col='#9C27B0';sub='All 50 questions read — mastery achieved'}
+  else if(n>=40){lv='Gold Reader';col='#FFC107';sub='40+ questions read — strong commitment'}
+  else if(n>=25){lv='Silver Reader';col='#9E9E9E';sub='25+ questions read — well on your way'}
+  else if(n>=10){lv='Bronze Reader';col='#CD7F32';sub='10+ questions read — great start'}
+  
+  var c=document.createElement('canvas');
+  c.width=1200;c.height=675;
+  var x=c.getContext('2d');
+  
+  var g=x.createLinearGradient(0,0,1200,675);
+  g.addColorStop(0,'#00AFD7');
+  g.addColorStop(1,'#002F6C');
+  x.fillStyle=g;
+  x.fillRect(0,0,1200,675);
+  
+  x.strokeStyle='rgba(255,255,255,0.3)';
+  x.lineWidth=4;
+  x.strokeRect(50,50,1100,575);
+  
+  x.fillStyle='rgba(255,255,255,0.08)';
+  x.fillRect(80,80,1040,515);
+  
+  x.fillStyle='#fff';
+  x.textAlign='center';
+  x.font='bold 32px Segoe UI, sans-serif';
+  x.fillText('SSOT — DOCUMENT MANAGEMENT',600,150);
+  
+  x.font='18px Segoe UI, sans-serif';
+  x.fillStyle='rgba(255,255,255,0.85)';
+  x.fillText('Single Source of Truth | HFHI for Humanity Asia-Pacific',600,185);
+  
+  x.fillStyle=col;
+  x.beginPath();
+  x.arc(600,260,12,0,Math.PI*2);
+  x.fill();
+  
+  x.fillStyle='#fff';
+  x.font='bold 72px Segoe UI, sans-serif';
+  x.fillText(lv,600,330);
+  
+  x.font='italic 18px Segoe UI, sans-serif';
+  x.fillStyle='rgba(255,255,255,0.85)';
+  x.fillText(sub,600,365);
+  
+  x.font='24px Segoe UI, sans-serif';
+  x.fillStyle='#fff';
+  x.fillText('Awarded to',600,420);
+  
+  x.font='bold 48px Segoe UI, sans-serif';
+  x.fillText(u,600,475);
+  
+  x.font='20px Segoe UI, sans-serif';
+  x.fillStyle='rgba(255,255,255,0.9)';
+  x.fillText(n+' of 50 questions read',600,520);
+  
+  var d=new Date().toLocaleDateString('en-GB',{day:'numeric',month:'long',year:'numeric'});
+  x.font='16px Segoe UI, sans-serif';
+  x.fillStyle='rgba(255,255,255,0.75)';
+  x.fillText(d,600,555);
+  
+  x.font='12px Segoe UI, sans-serif';
+  x.fillStyle='rgba(255,255,255,0.6)';
+  x.fillText('Issued by Sagar Poudel | Sr. Manager Systems & IT',600,610);
+  
+  var l=document.createElement('a');
+  l.download='SSOT_Badge_'+u.replace(/\s/g,'_')+'_'+lv.replace(/\s/g,'_')+'.png';
+  l.href=c.toDataURL('image/png');
+  l.click();
+}
+
+window.onload=function(){
+  if(localStorage.getItem('ssotUser')){
+    document.getElementById('modal').style.display='none';
+    init();
+  }
+};
+</script>
+</body></html>
