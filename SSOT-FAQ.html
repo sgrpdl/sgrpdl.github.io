@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html><head><meta charset="UTF-8"><title>SSOT FAQ V4</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Segoe UI',sans-serif;background:#f5f5f5;color:#000;line-height:1.6}
+.header{background:linear-gradient(135deg,#00AFD7,#002F6C);color:#fff;padding:35px 20px;text-align:center}
+.header h1{font-size:28px;margin-bottom:5px}
+.header p{font-size:14px;opacity:.9}
+#modal{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.7);z-index:9999;display:flex;align-items:center;justify-content:center}
+#modal .box{background:#fff;padding:35px;border-radius:12px;max-width:380px;text-align:center}
+#modal h2{color:#002F6C;margin-bottom:10px}
+#modal input{width:100%;padding:12px;margin:15px 0;border:2px solid #ddd;border-radius:8px;font-size:15px}
+#modal button{background:#00AFD7;color:#fff;border:0;padding:12px 28px;border-radius:8px;font-size:15px;font-weight:600;cursor:pointer}
+#panel{position:fixed;right:20px;top:90px;width:220px;background:#fff;border-radius:12px;padding:18px;box-shadow:0 4px 20px rgba(0,0,0,.1);font-size:13px;z-index:100}
+#panel h3{color:#002F6C;font-size:14px;margin-bottom:10px}
+#panel .stat{margin:8px 0}
+#panel .lvl{display:inline-block;background:#00AFD7;color:#fff;padding:4px 10px;border-radius:12px;font-weight:600;margin-top:5px}
+#panel button{background:#002F6C;color:#fff;border:0;padding:8px 14px;border-radius:8px;margin-top:12px;font-size:12px;font-weight:600;cursor:pointer;width:100%}
+.wrap{max-width:780px;margin:25px auto;padding:0 20px 50px}
+.cat{margin-bottom:15px;border:1px solid #e0e0e0;border-radius:10px;overflow:hidden;background:#fff}
+.ch{background:#F8F9FA;padding:14px 18px;cursor:pointer;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #e0e0e0}
+.ch:hover{background:#EEF7FA}
+.ch h2{font-size:15px;color:#002F6C;font-weight:700}
+.ch .cnt{font-size:11px;color:#fff;background:#00AFD7;padding:2px 9px;border-radius:10px;margin-left:8px}
+.ch .check{color:#4CAF50;font-size:18px;margin-left:8px}
+.cb{display:none}
+.qa{border-bottom:1px solid #f0f0f0;padding:8px 18px}
+.qa:last-child{border:none}
+.q{padding:8px 0;cursor:pointer;font-weight:600;font-size:14px;color:#1a1a1a}
+.a{padding:8px 0 12px;font-size:13.5px;color:#444;display:none;line-height:1.7}
+.rb{background:#00AFD7;color:#fff;border:0;padding:6px 12px;border-radius:6px;font-size:12px;cursor:pointer;margin-top:8px}
+.rb.done{background:#4CAF50}
+.ft{text-align:center;padding:25px;color:#888;font-size:12px;border-top:1px solid #ddd;background:#fff;margin-top:30px}
+.ft strong{color:#002F6C}
+@media(max-width:900px){#panel{position:relative;right:0;top:0;width:auto;margin:15px}}
+</style></head><body>
+<div id="modal"><div class="box"><h2>Welcome</h2><p>Enter your name to track progress and earn badges</p><input id="nm" placeholder="Your name"><br><button onclick="sv()">Start Reading</button></div></div>
+<div class="header"><h1>SSOT FAQ V4 — Interactive</h1><p>Earn your badge by reading through the FAQ</p></div>
+<div id="panel"><h3 id="un">Hello</h3><div class="stat">Read: <strong id="rc">0</strong>/50</div><div class="stat">Categories: <strong id="cc">0</strong>/11</div><div class="stat">Level: <span class="lvl" id="lv">Start</span></div><button onclick="pb()">📥 Print My Badge</button><button onclick="rs()" style="background:#888;font-size:11px;margin-top:8px">Reset Progress</button></div>
+<div class="wrap" id="main"></div>
+<div class="ft">Prepared by <strong>Sagar Poudel</strong> | Habitat for Humanity Asia-Pacific</div>
+<script>
+var DATA=[
+[0,'We are moving to Workday. Replace SSOT?','Different purposes. Workday handles structured data. SSOT handles operational documents.'],
+[0,'Is it worth the change?','Small effort per person. Big organisational impact.'],
+[0,'How to gauge SSOT value?','Frequency, risk, dependency. If any is high, SSOT pays off.'],
+[0,'Why now?','Prevention, not a fix for something broken today.'],
+[0,'Mandatory or optional?','Direction not optional. Pace can flex.'],
+[0,'Department framework?','One rulebook, different playbooks per department.'],
+[1,'Teams SP vs Filing Site?','Teams SP is the workshop. Filing Site is the vault.'],
+[1,'Just create Filed folder?','Inherits Team access. Filing Site is structurally different.'],
+[1,'OneDrive for final?','Personal storage. Lost when owner leaves.'],
+[1,'OneDrive for collaboration?','Breaks on departure. No shared ownership.'],
+[1,'Need Power Apps?','Optional experience layer.'],
+[2,'Library vs Folder vs Doc Set?','Cabinet, divider, envelope with shared tags.'],
+[2,'Always use Document Sets?','Only when files belong together as a unit.'],
+[2,'Abbreviate department names?','No. Readability wins over character optimisation.'],
+[2,'HR Library naming?','Same standard applies everywhere.'],
+[2,'Where do templates go?','Teams for team templates. Filing Site for org-wide.'],
+[2,'One Content Type or more?','One when columns match. More only when needed.'],
+[2,'Why lifecycle folders?','Visible conveyor belt from Drafts to Approved.'],
+[3,'When new channel?','When topic needs ongoing space and files.'],
+[3,'All collab needs channel?','No. Only ongoing visible work.'],
+[3,'Chat vs Channel?','Chat is fast for you. Channels for everyone.'],
+[4,'Consultant channel access?','Default no. File-level sharing with expiry.'],
+[4,'Who to contact?','AP IT (Sagar) and HR focal point.'],
+[4,'Separate Team for consultant?','Usually no. Dedicated channel is enough.'],
+[4,'Add consultant to channels?','Not by default. Habitat email enables Shared Channel option.'],
+[4,'External partners?','No direct site access. Share file links with expiry.'],
+[5,'Confidential files in search?','No. SharePoint search respects permissions.'],
+[5,'Who controls access?','Site owners and IT. Group-based access.'],
+[5,'When someone leaves?','Filing Site documents are unaffected.'],
+[6,'What is metadata?','Like Amazon filters for documents.'],
+[6,'Tagging extra work?','Thirty seconds per document.'],
+[6,'Folders vs metadata?','Folders hide. Metadata reveals.'],
+[6,'Find older documents?','Less effort. Less searching. Less guessing.'],
+[6,'Who creates tags?','Department brainstorms together.'],
+[7,'Content Owner?','Person closest to the document.'],
+[7,'Move all existing docs?','No. Start with new going forward.'],
+[7,'Email attachments?','Email for communication. Not storage.'],
+[7,'What goes in Filing Site?','Final, organisational, audit-worthy documents.'],
+[7,'Country office policy?','Keep Policy Review Record. Not their policy.'],
+[7,'Retention support?','SSOT is foundation. Retention builds on top.'],
+[8,'AI mistakes?','Expected. Agent is first filter, not decision maker.'],
+[8,'AI-tailored CVs?','HR reviews. AI narrows pile. Humans judge people.'],
+[8,'TalentPilot availability?','Available to all offices.'],
+[8,'Token in free plan?','Yes. Included with usage limits.'],
+[8,'Token cost by file type?','Markdown lowest. Images highest. MarkItDown solves it.'],
+[8,'PII safety?','Per Microsoft governance. Data stays in tenant.'],
+[8,'Paste CVs in Excel?','Script handles markdown conversion automatically.'],
+[8,'AI for other HR tasks?','Yes, after data is structured.'],
+[9,'IKC difference?','IKC is global library. Filing Site is operational records.'],
+[10,'How employees fill HREM data?','Employees use form links. HR uses portal.']
+];
+var CATS=['Do We Really Need This?','Tools and Technology','Libraries & Naming','Channels','External Collaboration','Security and Access','Metadata','Adoption','AI / TalentPilot','IKC','HREM Portal'];
+var ICONS=['🤔','⚙️','📁','💬','🌐','🔒','🔍','📋','🤖','🌏','💻'];
+function sv(){var n=document.getElementById('nm').value.trim();if(!n)return;localStorage.setItem('ssotUser',n);document.getElementById('modal').style.display='none';init()}
+function rs(){if(confirm('Reset progress?')){localStorage.removeItem('ssotRead');localStorage.removeItem('ssotUser');location.reload()}}
+function init(){var u=localStorage.getItem('ssotUser')||'Friend';document.getElementById('un').innerText='Hello, '+u;render();update()}
+function render(){var html='';for(var c=0;c<CATS.length;c++){var qs=[];for(var j=0;j<DATA.length;j++)if(DATA[j][0]===c)qs.push(j);if(qs.length===0)continue;html+='<div class="cat"><div class="ch" onclick="tC(this)"><h2>'+ICONS[c]+' '+CATS[c]+' <span class="cnt">'+qs.length+'</span><span class="check" id="chk'+c+'" style="display:none">✓</span></h2><span>▼</span></div><div class="cb">';for(var i=0;i<qs.length;i++){var idx=qs[i];var read=isRead(idx);html+='<div class="qa"><div class="q" onclick="tQ(this)">Q'+(idx+1)+': '+DATA[idx][1]+'</div><div class="a">'+DATA[idx][2]+'<br><button class="rb '+(read?'done':'')+'" onclick="mr('+idx+',this)">'+(read?'✓ Read':'Mark as Read')+'</button></div></div>'}html+='</div></div>'}document.getElementById('main').innerHTML=html;updateCheckmarks()}
+function tC(e){var b=e.nextElementSibling;b.style.display=b.style.display==='block'?'none':'block'}
+function tQ(e){var a=e.nextElementSibling;a.style.display=a.style.display==='block'?'none':'block'}
+function isRead(i){var r=JSON.parse(localStorage.getItem('ssotRead')||'[]');return r.indexOf(i)>=0}
+function mr(i,btn){var r=JSON.parse(localStorage.getItem('ssotRead')||'[]');var ix=r.indexOf(i);if(ix>=0){r.splice(ix,1);btn.classList.remove('done');btn.innerHTML='Mark as Read'}else{r.push(i);btn.classList.add('done');btn.innerHTML='✓ Read'}localStorage.setItem('ssotRead',JSON.stringify(r));update();updateCheckmarks()}
+function update(){var r=JSON.parse(localStorage.getItem('ssotRead')||'[]');var n=r.length;document.getElementById('rc').innerText=n;var cc=0;for(var c=0;c<CATS.length;c++){var qs=[];for(var j=0;j<DATA.length;j++)if(DATA[j][0]===c)qs.push(j);if(qs.length===0)continue;var all=true;for(var i=0;i<qs.length;i++)if(r.indexOf(qs[i])<0){all=false;break}if(all)cc++}document.getElementById('cc').innerText=cc;var lv='Start',col='#888';if(n>=50){lv='🏆 SSOT Champion';col='#9C27B0'}else if(n>=40){lv='🥇 Gold';col='#FFC107'}else if(n>=25){lv='🥈 Silver';col='#9E9E9E'}else if(n>=10){lv='🥉 Bronze';col='#CD7F32'}document.getElementById('lv').innerText=lv;document.getElementById('lv').style.background=col}
+function updateCheckmarks(){var r=JSON.parse(localStorage.getItem('ssotRead')||'[]');for(var c=0;c<CATS.length;c++){var qs=[];for(var j=0;j<DATA.length;j++)if(DATA[j][0]===c)qs.push(j);if(qs.length===0)continue;var all=true;for(var i=0;i<qs.length;i++)if(r.indexOf(qs[i])<0){all=false;break}var chk=document.getElementById('chk'+c);if(chk)chk.style.display=all?'inline':'none'}}
+function pb(){var u=localStorage.getItem('ssotUser')||'Friend';var r=JSON.parse(localStorage.getItem('ssotRead')||'[]');var n=r.length;var lv='Reader',col='#00AFD7';if(n>=50){lv='SSOT Champion';col='#9C27B0'}else if(n>=40){lv='Gold Reader';col='#FFC107'}else if(n>=25){lv='Silver Reader';col='#9E9E9E'}else if(n>=10){lv='Bronze Reader';col='#CD7F32'}var c=document.createElement('canvas');c.width=1200;c.height=675;var x=c.getContext('2d');var g=x.createLinearGradient(0,0,1200,675);g.addColorStop(0,'#00AFD7');g.addColorStop(1,'#002F6C');x.fillStyle=g;x.fillRect(0,0,1200,675);x.fillStyle='rgba(255,255,255,0.1)';x.fillRect(50,50,1100,575);x.fillStyle='#fff';x.font='bold 36px Segoe UI';x.textAlign='center';x.fillText('SSOT — Document Management',600,150);x.font='bold 70px Segoe UI';x.fillText(lv,600,260);x.font='28px Segoe UI';x.fillText('Awarded to',600,340);x.font='bold 52px Segoe UI';x.fillText(u,600,410);x.font='22px Segoe UI';x.fillText(n+' of 50 questions read',600,475);x.font='18px Segoe UI';var d=new Date().toLocaleDateString('en-GB',{day:'numeric',month:'long',year:'numeric'});x.fillText(d,600,520);x.font='14px Segoe UI';x.fillText('Habitat for Humanity Asia-Pacific',600,610);var l=document.createElement('a');l.download='SSOT_Badge_'+u.replace(/\s/g,'_')+'.png';l.href=c.toDataURL();l.click()}
+window.onload=function(){if(localStorage.getItem('ssotUser')){document.getElementById('modal').style.display='none';init()}}
+</script></body></html>
